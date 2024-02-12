@@ -1,0 +1,242 @@
+ 
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link rel="stylesheet" href="../public/style.css">
+</head>
+<body>
+    <div class="container">
+
+<!--
+    Table: address_details
+Student_ID int 
+Name text 
+Gender text 
+Email text 
+Home_District text 
+Home_Taluk text 
+Assembly_Constituency text 
+Pin_Code int 
+Permanent_Address text 
+Domicile_of_Karnataka text 
+-->
+<form id="Form1" action="/submit/address" method="post">
+    <h3>Address Details</h3>
+    <input type="text" name="Student_ID" placeholder="Student ID" required>
+    <input type="text" name="Name" placeholder="Name" required>
+    <input type="text" name="Gender" placeholder="Gender" required>
+    <input type="text" name="Email" placeholder="Email" required>
+    <input type="text" name="Home_District" placeholder="Home District" required>
+    <input type="text" name="Home_Taluk" placeholder="Home Taluk" required>
+    <input type="text" name="Assembly_Constituency" placeholder="Assembly Constituency" required>
+    <input type="number" name="Pin_Code" placeholder="Pin Code" required>
+    <input type="text" name="Permanent_Address" placeholder="Permanent Address" required>
+    <input type="text" name="Domicile_of_Karnataka" placeholder="Domicile of Karnataka" required>
+
+
+            <div class="btn-box">
+                <button type="button" id="Next1">Next</button>
+            </div>
+        </form>
+<!-- 
+    Table: academic_details
+
+Columns:
+Student_ID int 
+SSLC_CBSE_ICSE_Reg_Number text 
+Student_Name_as_in_SSLC_CBSE_ICSE text 
+College_District text 
+College_Taluk text 
+University_or_Board_Name text 
+College_Name text 
+Course_and_Course_Year text 
+Course_Discipline_or_Branch text 
+University_Registration_or_SATS_Number text 
+Course_Duration text 
+Counselling_Details text 
+Counselling_Seat_Type text 
+State_Scholarship_Portal 
+-->
+
+
+<form id="Form2" action="/submit/academic" method="post">
+    <h3>Academic Details</h3>
+    <input type="text" name="Student_ID" placeholder="Student ID" required>
+    <input type="text" name="SSLC_CBSE_ICSE_Reg_Number" placeholder="SSLC/CBSE/ICSE Reg Number" required>
+    <input type="text" name="Student_Name_as_in_SSLC_CBSE_ICSE" placeholder="Student Name as in SSLC/CBSE/ICSE" required>
+    <input type="text" name="College_District" placeholder="College District" required>
+    <input type="text" name="College_Taluk" placeholder="College Taluk" required>
+    <input type="text" name="University_or_Board_Name" placeholder="University or Board Name" required>
+    <input type="text" name="College_Name" placeholder="College Name" required>
+    <input type="text" name="Course_and_Course_Year" placeholder="Course and Course Year" required>
+    <input type="text" name="Course_Discipline_or_Branch" placeholder="Course Discipline or Branch" required>
+    <input type="text" name="University_Registration_or_SATS_Number" placeholder="University Registration or SATS Number" required>
+    <input type="text" name="Course_Duration" placeholder="Course Duration" required>
+    <input type="text" name="Counselling_Details" placeholder="Counselling Details" required>
+    <input type="text" name="Counselling_Seat_Type" placeholder="Counselling Seat Type" required>
+    <input type="text" name="State_Scholarship_Portal" placeholder="State Scholarship Portal" required>
+
+            <div class="btn-box">
+                <button type="button" id="Back1">Back</button>
+                <button type="button" id="Next2">Next</button>
+            </div>
+        </form>
+<!-- 
+        Table: caste_income_details
+Columns:
+Student_ID int 
+Religion text 
+Category text 
+Caste_Certificate_Number text 
+Name_as_in_Caste_Certificate text 
+Caste text 
+Subcaste text 
+Income_Certificate_Number text 
+Name_as_in_Income_Certificate text 
+Income_in_Rs
+ -->
+
+
+ <form id="Form3" action="/submit/caste_income" method="post">
+    <h3>Caste and Income Certificate Details</h3>
+    <input type="text" name="Student_ID" placeholder="Student ID" required>
+    <input type="text" name="Religion" placeholder="Religion" required>
+    <input type="text" name="Category" placeholder="Category" required>
+    <input type="text" name="Caste_Certificate_Number" placeholder="Caste Certificate Number" required>
+    <input type="text" name="Name_as_in_Caste_Certificate" placeholder="Name as in Caste Certificate" required>
+    <input type="text" name="Caste" placeholder="Caste" required>
+    <input type="text" name="Subcaste" placeholder="Subcaste" required>
+    <input type="text" name="Income_Certificate_Number" placeholder="Income Certificate Number" required>
+    <input type="text" name="Name_as_in_Income_Certificate" placeholder="Name as in Income Certificate" required>
+    <input type="number" name="Income_in_Rs" placeholder="Income in Rs" required>
+
+
+
+            <div class="btn-box">
+                <button type="button" id="Back2">Back</button>
+                <button type="button" id="Next3">Next</button>
+            </div>
+        </form> 
+<!-- 
+        Table: sslc_details
+Columns:
+SSLC_CBSE_ICSE_Reg_Number text 
+Board_Type text 
+Year_of_Passing int 
+DOB 
+-->
+
+
+<form id="Form4" action="/submit/sslc" method="post">
+    <h3>SSLC Details</h3>
+    <input type="text" name="SSLC_CBSE_ICSE_Reg_Number" placeholder="SSLC/CBSE/ICSE Reg Number" required>
+    <input type="text" name="Board_Type" placeholder="Board Type" required>
+    <input type="number" name="Year_of_Passing" placeholder="Year of Passing" required>
+    <input type="datetime" name="DOB" placeholder="Date of Birth" required>
+
+            <div class="btn-box">
+                <button type="button" id="Back3">Back</button>
+                <button type="button" id="Submit">Submit</button>
+            </div>
+        </form>
+
+        
+        <div class="step-row">
+            <div id="progress"></div>
+            <div class="step-col"><small>step 1</small></div>
+            <div class="step-col"><small>step 2</small></div>
+            <div class="step-col"><small>step 3</small></div>
+            <div class="step-col"><small>step 4</small></div>
+
+        </div>
+
+         <!--  
+        <form >
+            <h3>Create Account</h3>
+            <input type="text" placeholder="Email" required>
+            <input type="password" placeholder="Password" required>
+            <input type="text" placeholder="Email" required>
+            <div class="btn-box">
+                <button type="button">Next</button>
+            </div>
+        </form>
+
+        <form >
+            <h3>Create Account</h3>
+            <input type="text" placeholder="Email" required>
+            <input type="password" placeholder="Password" required>
+            <input type="text" placeholder="Email" required>
+            <div class="btn-box">
+                <button type="button">Next</button>
+            </div>
+        </form> -->
+
+         
+    </div>
+
+    <script>
+        var Form1 = document.getElementById("Form1");
+        var Form2 = document.getElementById("Form2");
+        var Form3 = document.getElementById("Form3");
+        var Form4 = document.getElementById("Form4");
+
+        var Next1 = document.getElementById("Next1");
+        var Next2 = document.getElementById("Next2");
+        var Next3 = document.getElementById("Next3");
+
+
+        var Back1 = document.getElementById("Back1");
+        var Back2 = document.getElementById("Back2");
+        var Back3 = document.getElementById("Back3");
+
+        var progress = document.getElementById("progress");
+
+
+        Next1.onclick = function(){
+            Form1.style.left = "-450px";
+            Form2.style.left = "40px";
+            progress.style.width = "240px";
+        }
+        
+        Back1.onclick = function(){
+            Form1.style.left = "40px";
+            Form2.style.left = "450px";
+            progress.style.width = "120px";
+
+        }
+
+        Next2.onclick = function(){
+            Form2.style.left = "-450px";
+            Form3.style.left = "40px";
+            progress.style.width = "360px";
+
+        }
+        Back2.onclick = function(){
+            Form2.style.left = "40px";
+            Form3.style.left = "450px";
+            progress.style.width = "240px";
+
+        }
+
+        Next2.onclick = function(){
+            Form3.style.left = "-450px";
+            Form4.style.left = "40px";
+            progress.style.width = "240px";
+
+        }
+        Back2.onclick = function(){
+            Form3.style.left = "40px";
+            Form4.style.left = "450px";
+            progress.style.width = "120px";
+
+        }
+
+
+    </script>
+     
+</body> 
+</html>
