@@ -1,0 +1,67 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #EEF5FF;
+}
+
+
+header {
+    background-color: #176B87;
+    color: #EEF5FF;
+    padding: 1em 0;
+}
+
+nav.top-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+nav li {
+    margin-right: 20px;
+}
+
+nav a {
+    text-decoration: none;
+    color: #EEF5FF;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.nav-right {
+    margin-left: auto;
+}
+
+.home-section {
+    background-color: #86B6F6;
+    color: #EEF5FF;
+    text-align: center;
+    padding: 170px;
+    /* background-image: url("https://plus.unsplash.com/premium_photo-1679547202572-bb3a34c54130?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
+    background-size:100% 100%; /* Ensures the image covers the entire background */
+    /* background-position: center; /* Centers the image within the screen */
+    /* margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #333; Adjust text color to be visible against the background */ 
+}
+
+.quote-container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+footer {
+    background-color: #176B87;
+    color: #EEF5FF;
+    text-align: center;
+    padding: 1em 0;
+}

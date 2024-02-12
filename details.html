@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Information Collection</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            max-width: 600px;
+            width: 100%;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        form {
+            padding: 20px;
+        }
+
+        h2 {
+            font-size: 20px;
+            margin: 20px 0;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        input[type="file"],
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        input[type="submit"] {
+            background-color: #007BFF;
+            color: #fff;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Personal Information Collection</h1>
+        <form action="process.php" method="POST" enctype="multipart/form-data">
+            <h2>Personal details</h2>
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name">
+
+            <label for="dob">Date Of Birth</label>
+            <input type="date" id="dob" name="dob">
+            
+            <label for="gender">Gender</label>
+            <input type="text" id="gender" name="gender">
+
+            <label for="phone">Contact number</label>
+            <input type="tel" id="phone" name="phone">
+
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email">
+
+            <label for="address">Address</label>
+            <input type="text" id="address" name="address">
+
+            <h2>Identity Verification</h2>
+            <!-- <label for="Government_id">Government ID</label>
+            <input type="text" id="government_id" name="government_id"> -->
+            
+
+            <label for="government_id">Government ID:</label>
+            <input type="file" id="aadhar_card" name "aadhar_card" accept="image/*" required>
+            
+            <h2>Personal Photo</h2>
+            <label for="personal_photo">Personal Photo:</label>
+            <input type="file" id="personal_photo" name="personal_photo" accept="image/*" required>
+
+            <h2>Scholarship Information</h2>
+            <label for="Scholarship">Scholarship</label>
+            <!-- <select name="Scholarship" id="Scholarship">Scholarship</select>
+            <option value="ssp">SSP</option> -->
+
+            <select id="scholarship" name="scholarship">
+                <option value="SSP">SSP</option>
+                <option value="MSP">MSP</option>
+                <!-- Add more options as needed -->
+            </select>
+            
+            
+
+            <h2>Bank Information</h2>
+            <label for="bank_account">Bank Account Number:</label>
+            <input type="text" id="bank_account" name="bank_account" required>
+
+            <label for="ifsc_code">IFSC Code:</label>
+            <input type="text" id="ifsc_code" name="ifsc_code" required>
+
+            <label for="account_holder_name">Account Holder Name:</label>
+            <input type="text" id="account_holder_name" name="account_holder_name" required>
+
+            <input type="submit" value="Submit">
+        </form>
+    </div>
+</body>
+</html>
