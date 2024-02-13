@@ -386,6 +386,7 @@ function submitFormData(formData, url) {
             throw new Error('Network response was not ok');
         }
         return response.text();
+        
     })
     .then(data => {
         console.log('Data inserted successfully:', data);
