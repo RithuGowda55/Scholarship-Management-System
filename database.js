@@ -216,6 +216,13 @@ WHERE
         );
     `,
 
+    ViewTigger:
+    `
+    select * from audit_trail;
+    `
+
+    
+
 };
 
 
@@ -357,58 +364,18 @@ class DatabaseManager {
         }
     }
 
-    
-
- 
-        
-    async adminDelete(Student_ID) {
+    async viewTrigger() {
         try {
-            await this.pool.query(queries.AdminDelete, [Student_ID]);
+            const [rows]  = await this.pool.query(queries.ViewTigger);
+            return rows;
 
         } catch (error) {
-            console.error('Error deleting: ', error.message);
+            console.error('Error creating: ', error.message);
             return [];
         }
     }
 
-    async deleteRecords(Student_ID) {
-        try {
-            await this.pool.query(queries.AcademicDelete, [Student_ID]);
-            await this.pool.query(queries.AddressDelete, [Student_ID]);
-            await this.pool.query(queries.CasteIncomeDelete, [Student_ID]);
-            await this.pool.query(queries.SslcDelete, [Student_ID]);
-
-        } catch (error) {
-            console.error('Error deleting: ', error.message);
-            return [];
-        }
-    }
-
-
-    // async deleteRecordss(Student_ID) {
-    //     try {
-
-    //         const studentExists = await this.checkStudentExistence(Student_ID);
-
-    //         if (studentExists) {
-    //             // Perform deletion of records
-    //             // You need to write appropriate SQL queries to delete records from all relevant tables
-    //             await this.pool.query("DELETE FROM academic_details WHERE Student_ID = ?", [Student_ID]);
-    //             await this.pool.query("DELETE FROM address_details WHERE Student_ID = ?", [Student_ID]);
-    //             await this.pool.query("DELETE FROM caste_income_details WHERE Student_ID = ?", [Student_ID]);
-    //             await this.pool.query("DELETE FROM sslc_details WHERE SSLC_CBSE_ICSE_Reg_Number = (SELECT SSLC_CBSE_ICSE_Reg_Number FROM academic_details WHERE Student_ID = ?)", [Student_ID]);
-    //             // Add more deletion queries if needed
-    //             return true; // Deletion successful
-    //         } else {
-    //             // If the student does not exist, return false
-    //             return false;
-    //         }
-
-    //     } catch (error) {
-    //         console.error('Error deleting: ', error.message);
-    //         throw error;
-    //     }
-    // }
+   
 
     async deleteRecordss(Student_ID) {
         try {

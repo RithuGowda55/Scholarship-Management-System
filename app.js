@@ -102,6 +102,10 @@ app.get('/admin/delete', (req, res) => {
     res.sendFile(__dirname + '/backend/controllers/dynamic.html');
 });
 
+app.get('/admin/update', (req, res) => {
+    res.sendFile(__dirname + '/backend/controllers/audit.html');
+});
+
 // this is for address details
 
 // Route to handle address details form submission
@@ -204,17 +208,29 @@ app.get('/admindel/:Student_ID', async (req, res) => {
         // Check if any rows were affected
         if (!result || result.affectedRows === undefined || result.affectedRows === 0) {
             // If no rows were affected, send an alert message
-            return res.status(404).json({ error: 'Student ID not found' });
+            return res.send('<h1>Student ID not found</h1>');
+
         }
 
         // If deletion was successful, send a success message
         console.log("Deleted successfully");
-        res.status(200).json({ message: 'Data deleted successfully' });
+        return res.send('<h1>Student records deleted successfully</h1>');
 
     } catch (error) {
         // If there's an error, send a 500 response
         console.error('Error deleting student:', error.message);
         res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+app.get('/api/audit_trail', async (req, res) => {    
+    // res.json(academicDetailsData);
+    try {
+        const academicDetails = await DBHandler.viewTrigger();
+        res.json(academicDetails);
+    } catch (error) {
+        console.error('Error fetching academic details: ', error.message);
+        res.status(500).send('Internal Server Error');
     }
 });
 
@@ -230,6 +246,8 @@ app.get('/api/academic_details', async (req, res) => {
         res.status(500).send('Internal Server Error');
     }
 });
+
+
 
 
 app.get('/api/address_details', async (req, res) => {    
