@@ -106,6 +106,18 @@ app.get('/admin/update', (req, res) => {
     res.sendFile(__dirname + '/backend/controllers/audit.html');
 });
 
+app.get('/home', (req, res) => {
+    res.sendFile(__dirname + '/frontend/Homepage/home.html');
+});
+
+app.get('/about', (req, res) => {
+    res.sendFile(__dirname + '/frontend/Homepage/about.html');
+});
+
+app.get('/announcements', (req, res) => {
+    res.sendFile(__dirname + '/frontend/Homepage/announcement.html');
+});
+
 // this is for address details
 
 // Route to handle address details form submission
