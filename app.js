@@ -2,10 +2,17 @@
 // Import required modules
 const express = require('express');
 const mysql = require('mysql2');
+const router = express.Router(); 
+// const path = require('path'); 
 
 // Create an Express application
 const app = express();
 const port = 5500;
+
+// app.set('views', path.join(__dirname, 'views'));
+
+// Set the view engine to 'ejs'
+// app.set('view engine', 'ejs');
 
 // Database handler
 const DatabaseManager = require('./database');
@@ -65,6 +72,18 @@ app.get('/index', (req, res) => {
     res.sendFile(__dirname + '/frontend/views/index.html');
 });
 
+app.get('/studentopt.html', (req, res) => {
+    res.sendFile(__dirname + '/frontend/views/studentopt.html');
+});
+
+app.get('/viewspec', (req, res) => {
+    res.sendFile(__dirname + '/frontend/views/viewspec.html');
+});
+
+app.get('/view1', (req, res) => {
+    res.sendFile(__dirname + '/frontend/views/viewspec.html');
+});
+
 // this is for address details
 
 // Route to handle address details form submission
@@ -96,6 +115,53 @@ app.post('/Next4', async (req, res) => {
     res.sendFile(__dirname + '/frontend/views/acknowledge.html');
 });
 
+// app.get('/student/${Student_ID}', async (req, res) => {
+//     const studentId = req.params.id;
+
+//     try {
+//         // Call your function to fetch student information based on the studentId
+//         const student = await DBHandler.getStudentViewById(studentId);
+
+//         // Check if student is found
+        // if (student) {
+        //     // Send the student information as JSON response
+        //     res.json(student);
+        // } else {
+        //     // If student is not found, send a 404 response
+        //     res.status(404).json({ error: 'Student not found' });
+        // }
+//     } catch (error) {
+//         // If there's an error, send a 500 response
+//         console.error('Error fetching student:', error.message);
+//         res.status(500).json({ error: 'Internal Server Error' });
+//     }
+// });
+
+app.get('/student/:Student_ID', async (req, res) => {
+    const studentId = req.params.Student_ID; // Extracting student ID from the route parameter
+    console.log(studentId);
+    
+    try {
+        const student = await DBHandler.getStudentViewById(studentId);
+
+        if (student) {
+            // Send the student information as JSON response
+            res.json(student);
+            // res.render('viewspec', { student });
+            return;
+        } else {
+            // If student is not found, send a 404 response
+            res.status(404).json({ error: 'Student not found' });
+        }
+    } catch (error) {
+        // If there's an error, send a 500 response
+        console.error('Error fetching student:', error.message);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+
+    // Send the viewspec.html file regardless of whether the student was found or not
+    // res.sendFile(__dirname + '/frontend/views/viewspec.html');
+});
 
 
 // Start the server

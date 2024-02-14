@@ -195,9 +195,9 @@ class DatabaseManager {
 
     // For views
 
-    async getStudentViewById(studentid) {
+    async getStudentViewById(Student_ID) {
         try {
-            const [[row]] = await this.pool.query(queries.GetStudentViewById, [studentid]);
+            const [[row]] = await this.pool.query(queries.GetStudentViewById, [Student_ID]);
 
             return row;
         } catch (error) {
@@ -205,6 +205,8 @@ class DatabaseManager {
             return [];
         }
     }
+        
+    
 };
 
 
