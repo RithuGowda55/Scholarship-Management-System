@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+</head>
+<body>
+    <h1>Admin Dashboard</h1>
+    
+    <div id="tables-container"></div>
+
+    <script>
+        // Function to fetch data from backend API and create tables dynamically
+        function createTables() {
+            // Define table configurations
+            const tableConfigurations = [
+                {
+                    tableName: 'Academic Details',
+                    endpoint: '/api/academic_details',
+                    fields: [
+                        'Student_ID', 'SSLC_CBSE_ICSE_Reg_Number', 'Student_Name_as_in_SSLC_CBSE_ICSE',
+                        'College_District', 'College_Taluk', 'University_or_Board_Name', 'College_Name',
+                        'Course_and_Course_Year', 'Course_Discipline_or_Branch', 'University_Registration_or_SATS_Number',
+                        'Course_Duration', 'Counselling_Details', 'Counselling_Seat_Type', 'State_Scholarship_Portal'
+                    ]
+                },
+                {
+                    tableName: 'Address Details',
+                    endpoint: '/api/address_details',
+                    fields: [
+                        'Name', 'Gender', 'Email', 'Home_District', 'Home_Taluk', 'Assembly_Constituency',
+                        'Pin_Code', 'Permanent_Address', 'Domicile_of_Karnataka'
+                    ]
+                },
+                {
+                    tableName: 'Caste Income Details',
+                    endpoint: '/api/caste_income_details',
+                    fields: [
+                        'Religion', 'Category', 'Caste_Certificate_Number', 'Name_as_in_Caste_Certificate',
+                        'Caste', 'Subcaste', 'Income_Certificate_Number', 'Name_as_in_Income_Certificate', 'Income_in_Rs'
+                    ]
+                },
+                {
+                    tableName: 'SSLC Details',
+                    endpoint: '/api/sslc_details',
+                    fields: ['Board_Type', 'Year_of_Passing', 'DOB']
+                }
+                // Add more tables as needed
+            ];
+
+            // Container to hold all tables
+            const tablesContainer = document.getElementById('tables-container');
+
+            // Iterate over table configurations and create tables
+            tableConfigurations.forEach(tableConfig => {
+                fetch(tableConfig.endpoint)
+                    .then(response => response.json())
+                    .then(data => {
+                        // Create table element
+                        const table = document.createElement('table');
+                        table.innerHTML = `
+                            <caption>${tableConfig.tableName}</caption>
+                            <thead>
+                                <tr>
+                                    ${tableConfig.fields.map(field => `<th>${field}</th>`).join('')}
+                                </tr>
+                            </thead>
+                            <tbody id="${tableConfig.tableName.replace(/\s+/g, '-').toLowerCase()}-body">
+                                <!-- Table body will be populated dynamically -->
+                            </tbody>
+                        `;
+                        tablesContainer.appendChild(table);
+                        // Populate table with data
+                        const tableBody = document.getElementById(`${tableConfig.tableName.replace(/\s+/g, '-').toLowerCase()}-body`);
+                        data.forEach(row => {
+                            const tableRow = document.createElement('tr');
+                            // Populate table row with data fields
+                            tableRow.innerHTML = `
+                                ${tableConfig.fields.map(field => `<td>${row[field]}</td>`).join('')}
+                            `;
+                            tableBody.appendChild(tableRow);
+                        });
+                    })
+                    .catch(error => console.error(`Error fetching data for ${tableConfig.tableName}:`, error));
+            });
+        }
+
+        // Call the function to create tables when the page loads
+        createTables();
+    </script>
+</body>
+</html>

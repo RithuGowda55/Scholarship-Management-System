@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+</head>
+<body>
+    <h1>Admin Dashboard</h1>
+    <table id="admin-table">
+        <thead>
+            <tr>
+                <th>Student ID</th>
+                <th>SSLC/CBSE/ICSE Reg Number</th>
+                <th>Student Name</th>
+                <th>College District</th>
+                <th>College Taluk</th>
+                <th>University or Board Name</th>
+                <th>College Name</th>
+                <th>Course and Course Year</th>
+                <th>Course Discipline or Branch</th>
+                <th>University Registration or SATS Number</th>
+                <th>Course Duration</th>
+                <th>Counselling Details</th>
+                <th>Counselling Seat Type</th>
+                <th>State Scholarship Portal</th>
+                <th>Religion</th>
+                <th>Category</th>
+                <th>Caste Certificate Number</th>
+                <th>Name as in Caste Certificate</th>
+                <th>Caste</th>
+                <th>Subcaste</th>
+                <th>Income Certificate Number</th>
+                <th>Name as in Income Certificate</th>
+                <th>Income in Rs</th>
+                <th>Name</th>
+                <th>Gender</th>
+                <th>Email</th>
+                <th>Home District</th>
+                <th>Home Taluk</th>
+                <th>Assembly Constituency</th>
+                <th>Pin Code</th>
+                <th>Permanent Address</th>
+                <th>Domicile of Karnataka</th>
+                <th>Board Type</th>
+                <th>Date of Birth</th>
+                <th>Year of Passing</th>
+            </tr>
+        </thead>
+        <tbody id="admin-table-body">
+            <!-- Table body will be populated dynamically -->
+        </tbody>
+    </table>
+
+    <script>
+        // Fetch data from backend API
+        fetch('/api/admin_data')
+            .then(response => response.json())
+            .then(data => {
+                // Populate table with data
+                const tableBody = document.getElementById('admin-table-body');
+                data.forEach(student => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${student.Student_ID}</td>
+                        <td>${student.SSLC_CBSE_ICSE_Reg_Number}</td>
+                        <td>${student.Student_Name_as_in_SSLC_CBSE_ICSE}</td>
+                        <td>${student.College_District}</td>
+                        <td>${student.College_Taluk}</td>
+                        <td>${student.University_or_Board_Name}</td>
+                        <td>${student.College_Name}</td>
+                        <td>${student.Course_and_Course_Year}</td>
+                        <td>${student.Course_Discipline_or_Branch}</td>
+                        <td>${student.University_Registration_or_SATS_Number}</td>
+                        <td>${student.Course_Duration}</td>
+                        <td>${student.Counselling_Details}</td>
+                        <td>${student.Counselling_Seat_Type}</td>
+                        <td>${student.State_Scholarship_Portal}</td>
+                        <td>${student.Religion}</td>
+                        <td>${student.Category}</td>
+                        <td>${student.Caste_Certificate_Number}</td>
+                        <td>${student.Name_as_in_Caste_Certificate}</td>
+                        <td>${student.Caste}</td>
+                        <td>${student.Subcaste}</td>
+                        <td>${student.Income_Certificate_Number}</td>
+                        <td>${student.Name_as_in_Income_Certificate}</td>
+                        <td>${student.Income_in_Rs}</td>
+                        <td>${student.Name}</td>
+                        <td>${student.Gender}</td>
+                        <td>${student.Email}</td>
+                        <td>${student.Home_District}</td>
+                        <td>${student.Home_Taluk}</td>
+                        <td>${student.Assembly_Constituency}</td>
+                        <td>${student.Pin_Code}</td>
+                        <td>${student.Permanent_Address}</td>
+                        <td>${student.Domicile_of_Karnataka}</td>
+                        <td>${student.Board_Type}</td>
+                        <td>${student.DOB}</td>
+                        <td>${student.Year_of_Passing}</td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            })
+            .catch(error => console.error('Error fetching data:', error));
+    </script>
+</body>
+</html>

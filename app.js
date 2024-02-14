@@ -3,6 +3,8 @@
 const express = require('express');
 const mysql = require('mysql2');
 const router = express.Router(); 
+// const dbManager = new DatabaseManager();
+
 // const path = require('path'); 
 
 // Create an Express application
@@ -92,6 +94,10 @@ app.get('/adminspec1', (req, res) => {
     res.sendFile(__dirname + '/backend/controllers/adminspec1.html');
 });
 
+app.get('/adminspec', (req, res) => {
+    res.sendFile(__dirname + '/backend/controllers/dynamic2.html');
+});
+
 // this is for address details
 
 // Route to handle address details form submission
@@ -179,6 +185,49 @@ app.get('/admin/:Student_ID', async (req, res) => {
     // Send the viewspec.html file regardless of whether the student was found or not
     // res.sendFile(__dirname + '/frontend/views/viewspec.html');
 });
+
+app.get('/api/academic_details', async (req, res) => {    
+    // res.json(academicDetailsData);
+    try {
+        const academicDetails = await DBHandler.academicDetailsData();
+        res.json(academicDetails);
+    } catch (error) {
+        console.error('Error fetching academic details: ', error.message);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
+
+app.get('/api/address_details', async (req, res) => {    
+    try {
+        const addressDetails = await DBHandler.addressDetailsData();
+        res.json(addressDetails);
+    } catch (error) {
+        console.error('Error fetching address details: ', error.message);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
+app.get('/api/caste_income_details', async (req, res) => {    
+    try {
+        const casteIncomeDetails = await DBHandler.casteIncomeDetailsData();
+        res.json(casteIncomeDetails);
+    } catch (error) {
+        console.error('Error fetching caste and income details: ', error.message);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
+app.get('/api/sslc_details', async (req, res) => {    
+    try {
+        const sslcDetails = await DBHandler.sslcDetailsData();
+        res.json(sslcDetails);
+    } catch (error) {
+        console.error('Error fetching SSLC details: ', error.message);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
 
 
 

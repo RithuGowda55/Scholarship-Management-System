@@ -182,7 +182,19 @@ WHERE
     GetAdminViewById:
     `
     SELECT * FROM admin_view WHERE Student_ID = ?;
-    `
+    `,
+
+    AcademicDetailsData:
+    `select * from academic_details;`,
+
+    AddressDetailsData:
+    `select * from address_details;`,
+
+    CasteIncomeDetailsData:
+    `select * from caste_income_details;`,
+
+    SslcDetailsData:
+    `select * from sslc_details;`,
 
 };
 
@@ -275,6 +287,50 @@ class DatabaseManager {
             const [[row]] = await this.pool.query(queries.GetAdminViewById, [Student_ID]);
 
             return row;
+        } catch (error) {
+            console.error('Error creating: ', error.message);
+            return [];
+        }
+    }
+
+    async academicDetailsData() {
+        try {
+            const [rows] = await this.pool.query(queries.AcademicDetailsData);
+
+            return rows;
+        } catch (error) {
+            console.error('Error creating: ', error.message);
+            return [];
+        }
+    }
+
+    async addressDetailsData() {
+        try {
+            const [rows] = await this.pool.query(queries.AddressDetailsData);
+
+            return rows;
+        } catch (error) {
+            console.error('Error creating: ', error.message);
+            return [];
+        }
+    }
+
+    async casteIncomeDetailsData() {
+        try {
+            const [rows] = await this.pool.query(queries.CasteIncomeDetailsData);
+
+            return rows;
+        } catch (error) {
+            console.error('Error creating: ', error.message);
+            return [];
+        }
+    }
+
+    async sslcDetailsData() {
+        try {
+            const [rows] = await this.pool.query(queries.SslcDetailsData);
+
+            return rows;
         } catch (error) {
             console.error('Error creating: ', error.message);
             return [];
