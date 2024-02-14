@@ -149,9 +149,65 @@ app.get('/student/:Student_ID', async (req, res) => {
 
         if (student) {
             // Send the student information as JSON response
-            res.json(student);
-            // res.render('viewspec', { student });
-            return;
+            // res.json(student);
+
+            const table = `
+
+            <h2>Student Details</h2>
+<table border="1">
+  <tr>
+    <th>Field</th>
+    <th>Value</th>
+  </tr>
+  <tr>
+    <td>Student ID</td>
+    <td>${student.Student_ID}</td>
+  </tr>
+  <tr>
+    <td>Date of Birth</td>
+    <td>${student.DOB}</td>
+  </tr>
+  <tr>
+    <td>SSLC/CBSE/ICSE Reg Number</td>
+    <td>${student.SSLC_CBSE_ICSE_Reg_Number}</td>
+  </tr>
+  <tr>
+    <td>Caste Certificate Number</td>
+    <td>${student.Caste_Certificate_Number}</td>
+  </tr>
+  <tr>
+    <td>Income Certificate Number</td>
+    <td>${student.Income_Certificate_Number}</td>
+  </tr>
+  <tr>
+    <td>Name as in Caste Certificate</td>
+    <td>${student.Name_as_in_Caste_Certificate}</td>
+  </tr>
+  <tr>
+    <td>Gender</td>
+    <td>${student.Gender}</td>
+  </tr>
+  <tr>
+    <td>Email</td>
+    <td>${student.Email}</td>
+  </tr>
+  <tr>
+    <td>Domicile of Karnataka</td>
+    <td>${student.Domicile_of_Karnataka}</td>
+  </tr>
+  <tr>
+    <td>Counselling Seat Type</td>
+    <td>${student.Counselling_Seat_Type}</td>
+  </tr>
+  <tr>
+    <td>State Scholarship Portal</td>
+    <td>${student.State_Scholarship_Portal}</td>
+  </tr>
+</table>
+
+            
+            `;
+            res.send(table);
         } else {
             // If student is not found, send a 404 response
             res.status(404).json({ error: 'Student not found' });
