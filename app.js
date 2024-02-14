@@ -84,6 +84,14 @@ app.get('/view1', (req, res) => {
     res.sendFile(__dirname + '/frontend/views/viewspec.html');
 });
 
+app.get('/view', (req, res) => {
+    res.sendFile(__dirname + '/backend/controllers/admin.html');
+});
+
+app.get('/adminspec1', (req, res) => {
+    res.sendFile(__dirname + '/backend/controllers/adminspec1.html');
+});
+
 // this is for address details
 
 // Route to handle address details form submission
@@ -115,27 +123,8 @@ app.post('/Next4', async (req, res) => {
     res.sendFile(__dirname + '/frontend/views/acknowledge.html');
 });
 
-// app.get('/student/${Student_ID}', async (req, res) => {
-//     const studentId = req.params.id;
 
-//     try {
-//         // Call your function to fetch student information based on the studentId
-//         const student = await DBHandler.getStudentViewById(studentId);
 
-//         // Check if student is found
-        // if (student) {
-        //     // Send the student information as JSON response
-        //     res.json(student);
-        // } else {
-        //     // If student is not found, send a 404 response
-        //     res.status(404).json({ error: 'Student not found' });
-        // }
-//     } catch (error) {
-//         // If there's an error, send a 500 response
-//         console.error('Error fetching student:', error.message);
-//         res.status(500).json({ error: 'Internal Server Error' });
-//     }
-// });
 
 app.get('/student/:Student_ID', async (req, res) => {
     const studentId = req.params.Student_ID; // Extracting student ID from the route parameter
@@ -162,6 +151,39 @@ app.get('/student/:Student_ID', async (req, res) => {
     // Send the viewspec.html file regardless of whether the student was found or not
     // res.sendFile(__dirname + '/frontend/views/viewspec.html');
 });
+
+
+
+app.get('/admin/:Student_ID', async (req, res) => {
+    const studentId = req.params.Student_ID; // Extracting student ID from the route parameter
+    console.log(studentId);
+    
+    try {
+        const student = await DBHandler.getAdminViewById(studentId);
+
+        if (student) {
+            // Send the student information as JSON response
+            res.json(student);
+            // res.render('viewspec', { student });
+            return;
+        } else {
+            // If student is not found, send a 404 response
+            res.status(404).json({ error: 'Student not found' });
+        }
+    } catch (error) {
+        // If there's an error, send a 500 response
+        console.error('Error fetching student:', error.message);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+
+    // Send the viewspec.html file regardless of whether the student was found or not
+    // res.sendFile(__dirname + '/frontend/views/viewspec.html');
+});
+
+
+
+
+
 
 
 // Start the server

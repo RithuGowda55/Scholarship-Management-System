@@ -121,7 +121,69 @@ const queries = {
     GetStudentViewById:
     `
     SELECT * FROM student_view WHERE Student_ID = ?;
+    `,
+
+    CreateAdminView:
+    
     `
+    CREATE OR REPLACE VIEW admin_view AS
+SELECT 
+    a.Student_ID,
+    a.SSLC_CBSE_ICSE_Reg_Number,
+    a.Student_Name_as_in_SSLC_CBSE_ICSE,
+    a.College_District,
+    a.College_Taluk,
+    a.University_or_Board_Name,
+    a.College_Name,
+    a.Course_and_Course_Year,
+    a.Course_Discipline_or_Branch,
+    a.University_Registration_or_SATS_Number,
+    a.Course_Duration,
+    a.Counselling_Details,
+    a.Counselling_Seat_Type,
+    a.State_Scholarship_Portal,
+    ci.Religion,
+    ci.Category,
+    ci.Caste_Certificate_Number,
+    ci.Name_as_in_Caste_Certificate,
+    ci.Caste,
+    ci.Subcaste,
+    ci.Income_Certificate_Number,
+    ci.Name_as_in_Income_Certificate,
+    ci.Income_in_Rs,
+    ad.Name,
+    ad.Gender,
+    ad.Email,
+    ad.Home_District,
+    ad.Home_Taluk,
+    ad.Assembly_Constituency,
+    ad.Pin_Code,
+    ad.Permanent_Address,
+    ad.Domicile_of_Karnataka,
+    s.Board_Type,
+    s.DOB,
+    s.Year_of_Passing
+FROM 
+    academic_details a, 
+    address_details ad, 
+    caste_income_details ci,  
+    sslc_details s 
+WHERE
+    a.Student_ID = ad.Student_ID 
+    AND ad.Student_ID = ci.Student_ID 
+    AND a.SSLC_CBSE_ICSE_Reg_Number = s.SSLC_CBSE_ICSE_Reg_Number;
+
+    `,
+    GetAdminView:
+    `
+    SELECT * FROM admin_view ;
+    
+    `,
+    GetAdminViewById:
+    `
+    SELECT * FROM admin_view WHERE Student_ID = ?;
+    `
+
 };
 
 
@@ -145,6 +207,8 @@ class DatabaseManager {
             await this.pool.query(queries.CreateCasteTable);
             await this.pool.query(queries.CreateSslcTable);
             await this.pool.query(queries.CreateStudentView);
+            await this.pool.query(queries.CreateAdminView);
+
         } catch (error) {
             console.error('Error creating: ', error.message);
         }
@@ -198,6 +262,17 @@ class DatabaseManager {
     async getStudentViewById(Student_ID) {
         try {
             const [[row]] = await this.pool.query(queries.GetStudentViewById, [Student_ID]);
+
+            return row;
+        } catch (error) {
+            console.error('Error creating: ', error.message);
+            return [];
+        }
+    }
+
+    async getAdminViewById(Student_ID) {
+        try {
+            const [[row]] = await this.pool.query(queries.GetAdminViewById, [Student_ID]);
 
             return row;
         } catch (error) {

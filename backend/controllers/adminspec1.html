@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fetch Student Information</title>
+    <!-- <link rel="stylesheet" href="/frontend/public/style1.css"> -->
+    <style>        body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh; /* Ensure content is centered vertically */
+    }
+
+    .container {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        max-width: 400px; /* Set maximum width for the container */
+        width: 100%; /* Ensure container fills available space */
+    }
+
+    h1 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    label {
+        font-weight: bold;
+    }
+
+    input[type="int"] {
+        width: calc(100% - 22px); /* Adjust input width to fit container padding */
+        padding: 10px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+    }
+
+    a.a {
+        display: block;
+        padding: 10px 20px;
+        font-size: 16px;
+        text-align: center;
+        background-color: #007bff;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 5px;
+        cursor: pointer;
+        border: none; /* Remove default button border */
+    }
+
+    a.a:hover {
+        background-color: #0056b3;
+    }
+
+    #student_info {
+        margin-top: 20px;
+    }
+
+    #student_info p {
+        margin: 5px 0;
+    }
+    .con {
+        height: 550px;
+        width: 550px;
+    }
+</style>
+    
+</head>
+<body>
+    <div class="con">
+        <h1>Fetch Student Information</h1>
+        <label for="student_id">Enter Student ID:</label>
+        <input type="int" id="student_id" name="Student_ID" onchange="updateLink()" > <!-- Corrected ID attribute -->
+        <a href="#"  class="button" id="fetch_link"> Fetch </a>
+    </div>
+    
+
+    <div id="admin_info">
+        <div class="admin-details">
+            <h2>Admin Details:</h2>
+            <div class="receipt">
+                <div class="receipt-item">
+                    <span class="item-label">Student ID:</span>
+                    <span class="item-value">{admin.Student_ID}</span>
+                </div>
+                <div class="receipt-item">
+                    <span class="item-label">Date of Birth:</span>
+                    <span class="item-value">{admin.DOB}</span>
+                </div>
+                <div class="receipt-item">
+                    <span class="item-label">SSL/CBSE/ICSE Reg Number:</span>
+                    <span class="item-value">{admin.SSLC_CBSE_ICSE_Reg_Number}</span>
+                </div>
+                <div class="receipt-item">
+                    <span class="item-label">Student Name as in SSLC/CBSE/ICSE:</span>
+                    <span class="item-value">{admin.Student_Name_as_in_SSLC_CBSE_ICSE}</span>
+                </div>
+                <div class="receipt-item">
+                    <span class="item-label">College District:</span>
+                    <span class="item-value">{admin.College_District}</span>
+                </div>
+                <div class="receipt-item">
+                    <span class="item-label">College Taluk:</span>
+                    <span class="item-value">{admin.College_Taluk}</span>
+                </div>
+                <div class="receipt-item">
+                    <span class="item-label">University or Board Name:</span>
+                    <span class="item-value">{admin.University_or_Board_Name}</span>
+                </div>
+                <div class="receipt-item">
+                    <span class="item-label">College Name:</span>
+                    <span class="item-value">{admin.College_Name}</span>
+                </div>
+                <div class="receipt-item">
+                    <span class="item-label">Course and Course Year:</span>
+                    <span class="item-value">{admin.Course_and_Course_Year}</span>
+                </div>
+                <div class="receipt-item">
+                    <span class="item-label">Course Discipline or Branch:</span>
+                    <span class="item-value">{admin.Course_Discipline_or_Branch}</span>
+                </div>
+                <div class="receipt-item">
+                    <span class="item-label">University Registration or SATS Number:</span>
+                    <span class="item-value">{admin.University_Registration_or_SATS_Number}</span>
+                </div>
+                <div class="receipt-item">
+                    <span class="item-label">Course Duration:</span>
+                    <span class="item-value">{admin.Course_Duration}</span>
+                </div>
+                <div class="receipt-item">
+                    <span class="item-label">Counselling Details:</span>
+                    <span class="item-value">{admin.Counselling_Details}</span>
+                </div>
+                <div class="receipt-item">
+                    <span class="item-label">Counselling Seat Type:</span>
+                    <span class="item-value">{admin.Counselling_Seat_Type}</span>
+                </div>
+                <div class="receipt-item">
+                    <span class="item-label">State Scholarship Portal:</span>
+                    <span class="item-value">{admin.State_Scholarship_Portal}</span>
+                </div>
+                <div class="receipt-item">
+                    <span class="item-label">Religion:</span>
+                    <span class="item-value">{admin.Religion}</span>
+                </div>
+                <div class="receipt-item">
+                    <span class="item-label">Category:</span>
+                    <span class="item-value">{admin.Category}</span>
+                </div>
+                <div class="receipt-item">
+                    <span class="item-label">Caste Certificate Number:</span>
+                    <span class="item-value">{admin.Caste_Certificate_Number}</span>
+                </div>
+                <div class="receipt-item">
+                    <span class="item-label">Name as in Caste Certificate:</span>
+                    <span class="item-value">{admin.Name_as_in_Caste_Certificate}</span>
+                </div>
+                <div class="receipt-item">
+                    <span class="item-label">Caste:</span>
+                    <span class="item-value">{admin.Caste}</span>
+                </div>
+                <div class="receipt-item">
+                    <span class="item-label">Subcaste:</span>
+                    <span class="item-value">{admin.Subcaste}</span>
+                </div>
+                <div class="receipt-item">
+                    <span class="item-label">Income Certificate Number:</span>
+                    <span class="item-value">{admin.Income_Certificate_Number}</span>
+                </div>
+                <div class="receipt-item">
+                    <span class="item-label">Name as in Income Certificate:</span>
+                    <span class="item-value">{admin.Name_as_in_Income_Certificate}</span>
+                </div>
+                <div class="receipt-item">
+                    <span class="item-label">Income in Rs:</span>
+                    <span class="item-value">{admin.Income_in_Rs}</span>
+                </div>
+                <div class="receipt-item">
+                    <span class="item-label">Name:</span>
+                    <span class="item-value">{admin.Name}</span>
+                </div>
+                <div class="receipt-item">
+                    <span class="item-label">Gender:</span>
+                    <span class="item-value">{admin.Gender}</span>
+                </div>
+                <div class="receipt-item">
+                    <span class="item-label">Email:</span>
+                    <span class="item-value">{admin.Email}</span>
+                </div>
+                <div class="receipt-item">
+                    <span class="item-label">Home District:</span>
+                    <span class="item-value">{admin.Home_District}</span>
+                </div>
+                <div class="receipt-item">
+                    <span class="item-label">Home Taluk:</span>
+                    <span class="item-value">{admin.Home_Taluk}</span>
+                </div>
+                <div class="receipt-item">
+                    <span class="item-label">Assembly Constituency:</span>
+                    <span class="item-value">{admin.Assembly_Constituency}</span>
+                </div>
+                <div class="receipt-item">
+                    <span class="item-label">Pin Code:</span>
+                    <span class="item-value">{admin.Pin_Code}</span>
+                </div>
+                <div class="receipt-item">
+                    <span class="item-label">Permanent Address:</span>
+                    <span class="item-value">{admin.Permanent_Address}</span>
+                </div>
+                <div class="receipt-item">
+                    <span class="item-label">Domicile of Karnataka:</span>
+                    <span class="item-value">{admin.Domicile_of_Karnataka}</span>
+                </div>
+                <div class="receipt-item">
+                    <span class="item-label">Board Type:</span>
+                    <span class="item-value">{admin.Board_Type}</span>
+                </div>
+                <div class="receipt-item">
+                    <span class="item-label">Year of Passing:</span>
+                    <span class
+    
+        
+                
+            </div>
+
+    <script>
+
+        function updateLink() {
+            const studentId = document.getElementById('student_id').value;
+            const link = document.getElementById('fetch_link');
+            link.href = `/admin/${studentId}`;
+        }
+
+        // async function fetchStudent() {
+        //     const studentId = document.getElementById('student_id').value;
+        //     try {
+        //         const response = await fetch(`http://localhost:3000/student/${studentId}`);
+        //         if (!response.ok) {
+        //             throw new Error('Network response was not ok');
+        //         }
+        //         const data = await response.json();
+        //         displayStudentInfo(data);
+        //     } catch (error) {
+        //         console.error('Error fetching student:', error);
+        //         displayStudentInfo(null); // Display an error message
+        //     }
+        // }
+
+        function displayStudentInfo(student) {
+            const studentInfoDiv = document.getElementById('student_info');
+            studentInfoDiv.innerHTML = ''; // Clear previous content
+    
+            if (student) {
+                const keys = Object.keys(student);
+                keys.forEach(key => {
+                    const p = document.createElement('p');
+                    p.textContent = `${key}: ${student[key]}`;
+                    studentInfoDiv.appendChild(p);
+                });
+            } else {
+                studentInfoDiv.textContent = 'Student information not found';
+            }
+        }
+
+    
+            
+
+    </script>
+    
+</body>
+</html>
