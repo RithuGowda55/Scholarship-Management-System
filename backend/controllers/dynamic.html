@@ -3,105 +3,186 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard</title>
+    <title>Delete Student Information</title>
+    <!-- <link rel="stylesheet" href="/frontend/public/style1.css"> -->
+    <style>        body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh; /* Ensure content is centered vertically */
+    }
+
+    .container {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        max-width: 400px; /* Set maximum width for the container */
+        width: 100%; /* Ensure container fills available space */
+    }
+
+    h1 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    label {
+        font-weight: bold;
+    }
+
+    input[type="int"] {
+        width: calc(100% - 22px); /* Adjust input width to fit container padding */
+        padding: 10px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+    }
+
+    a.a {
+        display: block;
+        padding: 10px 20px;
+        font-size: 16px;
+        text-align: center;
+        background-color: #007bff;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 5px;
+        cursor: pointer;
+        border: none; /* Remove default button border */
+    }
+
+    a.a:hover {
+        background-color: #0056b3;
+    }
+
+    #student_info {
+        margin-top: 20px;
+    }
+
+    #student_info p {
+        margin: 5px 0;
+    }
+    .con {
+        height: 550px;
+        width: 550px;
+    }
+</style>
+    
 </head>
 <body>
-    <h1>Admin Dashboard</h1>
-    <table id="admin-table">
-        <thead>
-            <tr>
-                <th>Student ID</th>
-                <th>SSLC/CBSE/ICSE Reg Number</th>
-                <th>Student Name</th>
-                <th>College District</th>
-                <th>College Taluk</th>
-                <th>University or Board Name</th>
-                <th>College Name</th>
-                <th>Course and Course Year</th>
-                <th>Course Discipline or Branch</th>
-                <th>University Registration or SATS Number</th>
-                <th>Course Duration</th>
-                <th>Counselling Details</th>
-                <th>Counselling Seat Type</th>
-                <th>State Scholarship Portal</th>
-                <th>Religion</th>
-                <th>Category</th>
-                <th>Caste Certificate Number</th>
-                <th>Name as in Caste Certificate</th>
-                <th>Caste</th>
-                <th>Subcaste</th>
-                <th>Income Certificate Number</th>
-                <th>Name as in Income Certificate</th>
-                <th>Income in Rs</th>
-                <th>Name</th>
-                <th>Gender</th>
-                <th>Email</th>
-                <th>Home District</th>
-                <th>Home Taluk</th>
-                <th>Assembly Constituency</th>
-                <th>Pin Code</th>
-                <th>Permanent Address</th>
-                <th>Domicile of Karnataka</th>
-                <th>Board Type</th>
-                <th>Date of Birth</th>
-                <th>Year of Passing</th>
-            </tr>
-        </thead>
-        <tbody id="admin-table-body">
-            <!-- Table body will be populated dynamically -->
-        </tbody>
-    </table>
+    <div class="con">
+        <h1>Delete Student Information</h1>
+        <label for="student_id">Enter Student ID:</label>
+        <input type="int" id="student_id" name="Student_ID" onchange="updateLink()" > <!-- Corrected ID attribute -->
+        <a href="#"  class="button" id="fetch_link"> Delete </a>
+    </div>
+
+    <!-- <div id="student_info">
+        <div class="student-details">
+            <h2>Student Details:</h2>
+            <div class="receipt">
+                <div class="receipt-item">
+                    <span class="item-label">Student ID:</span>
+                    <span class="item-value">{student.Student_ID}</span>
+                </div>
+                <div class="receipt-item">
+                    <span class="item-label">Date of Birth:</span>
+                    <span class="item-value">{student.DOB}</span>
+                </div>
+                <div class="receipt-item">
+                    <span class="item-label">SSL/CBSE/ICSE Reg Number:</span>
+                    <span class="item-value">{student.SSLC_CBSE_ICSE_Reg_Number}</span>
+                </div>
+                
+                    <div class="receipt">
+                        <div class="receipt-item">
+                            <span class="item-label">Caste Certificate Number:</span>
+                            <span class="item-value">{student.Caste_Certificate_Number}</span>
+                        </div>
+                        <div class="receipt-item">
+                            <span class="item-label">Income Certificate Number:</span>
+                            <span class="item-value">{student.Income_Certificate_Number}</span>
+                        </div>
+                        <div class="receipt-item">
+                            <span class="item-label">Name as in Caste Certificate:</span>
+                            <span class="item-value">{student.Name_as_in_Caste_Certificate}</span>
+                        </div>
+                        <div class="receipt-item">
+                            <span class="item-label">Gender:</span>
+                            <span class="item-value">{student.Gender}</span>
+                        </div>
+                        <div class="receipt-item">
+                            <span class="item-label">Email:</span>
+                            <span class="item-value">{student.Email}</span>
+                        </div>
+                        <div class="receipt-item">
+                            <span class="item-label">Domicile of Karnataka:</span>
+                            <span class="item-value">{student.Domicile_of_Karnataka}</span>
+                        </div>
+                        <div class="receipt-item">
+                            <span class="item-label">Counselling Seat Type:</span>
+                            <span class="item-value">{student.Counselling_Seat_Type}</span>
+                        </div>
+                        <div class="receipt-item">
+                            <span class="item-label">State Scholarship Portal:</span>
+                            <span class="item-value">{student.State_Scholarship_Portal}</span>
+                        </div>
+                       
+                    </div>
+                </div>
+                
+            </div>
+        </div> -->
+        
+    </div>
 
     <script>
-        // Fetch data from backend API
-        fetch('/api/admin_data')
-            .then(response => response.json())
-            .then(data => {
-                // Populate table with data
-                const tableBody = document.getElementById('admin-table-body');
-                data.forEach(student => {
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td>${student.Student_ID}</td>
-                        <td>${student.SSLC_CBSE_ICSE_Reg_Number}</td>
-                        <td>${student.Student_Name_as_in_SSLC_CBSE_ICSE}</td>
-                        <td>${student.College_District}</td>
-                        <td>${student.College_Taluk}</td>
-                        <td>${student.University_or_Board_Name}</td>
-                        <td>${student.College_Name}</td>
-                        <td>${student.Course_and_Course_Year}</td>
-                        <td>${student.Course_Discipline_or_Branch}</td>
-                        <td>${student.University_Registration_or_SATS_Number}</td>
-                        <td>${student.Course_Duration}</td>
-                        <td>${student.Counselling_Details}</td>
-                        <td>${student.Counselling_Seat_Type}</td>
-                        <td>${student.State_Scholarship_Portal}</td>
-                        <td>${student.Religion}</td>
-                        <td>${student.Category}</td>
-                        <td>${student.Caste_Certificate_Number}</td>
-                        <td>${student.Name_as_in_Caste_Certificate}</td>
-                        <td>${student.Caste}</td>
-                        <td>${student.Subcaste}</td>
-                        <td>${student.Income_Certificate_Number}</td>
-                        <td>${student.Name_as_in_Income_Certificate}</td>
-                        <td>${student.Income_in_Rs}</td>
-                        <td>${student.Name}</td>
-                        <td>${student.Gender}</td>
-                        <td>${student.Email}</td>
-                        <td>${student.Home_District}</td>
-                        <td>${student.Home_Taluk}</td>
-                        <td>${student.Assembly_Constituency}</td>
-                        <td>${student.Pin_Code}</td>
-                        <td>${student.Permanent_Address}</td>
-                        <td>${student.Domicile_of_Karnataka}</td>
-                        <td>${student.Board_Type}</td>
-                        <td>${student.DOB}</td>
-                        <td>${student.Year_of_Passing}</td>
-                    `;
-                    tableBody.appendChild(row);
-                });
-            })
-            .catch(error => console.error('Error fetching data:', error));
+
+        function updateLink() {
+            const studentId = document.getElementById('student_id').value;
+            const link = document.getElementById('fetch_link');
+            link.href = `/admindel/${studentId}`;
+        }
+
+        async function fetchStudent() {
+            const studentId = document.getElementById('student_id').value;
+            try {
+                const response = await fetch(`http://localhost:3000/admin/${studentId}`);
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const data = await response.json();
+                displayStudentInfo(data);
+            } catch (error) {
+                console.error('Error fetching student:', error);
+                displayStudentInfo(null); // Display an error message
+            }
+        }
+
+        // function displayStudentInfo(student) {
+        //     const studentInfoDiv = document.getElementById('student_info');
+        //     studentInfoDiv.innerHTML = ''; // Clear previous content
+    
+        //     if (student) {
+        //         const keys = Object.keys(student);
+        //         keys.forEach(key => {
+        //             const p = document.createElement('p');
+        //             p.textContent = `${key}: ${student[key]}`;
+        //             studentInfoDiv.appendChild(p);
+        //         });
+        //     } else {
+        //         studentInfoDiv.textContent = 'Student information not found';
+        //     }
+        // }
+
+    
+            
+
     </script>
+    
 </body>
 </html>

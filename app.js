@@ -98,6 +98,10 @@ app.get('/adminspec', (req, res) => {
     res.sendFile(__dirname + '/backend/controllers/dynamic2.html');
 });
 
+app.get('/admin/delete', (req, res) => {
+    res.sendFile(__dirname + '/backend/controllers/dynamic.html');
+});
+
 // this is for address details
 
 // Route to handle address details form submission
@@ -185,6 +189,36 @@ app.get('/admin/:Student_ID', async (req, res) => {
     // Send the viewspec.html file regardless of whether the student was found or not
     // res.sendFile(__dirname + '/frontend/views/viewspec.html');
 });
+
+app.get('/admindel/:Student_ID', async (req, res) => {
+    const studentId = req.params.Student_ID; // Extracting student ID from the route parameter
+    console.log(studentId);
+    
+    try {
+        // Perform deletion operation
+        const result = await DBHandler.deleteRecordss(studentId);
+        
+        // Log the result object to debug
+        console.log("Result:", result);
+
+        // Check if any rows were affected
+        if (!result || result.affectedRows === undefined || result.affectedRows === 0) {
+            // If no rows were affected, send an alert message
+            return res.status(404).json({ error: 'Student ID not found' });
+        }
+
+        // If deletion was successful, send a success message
+        console.log("Deleted successfully");
+        res.status(200).json({ message: 'Data deleted successfully' });
+
+    } catch (error) {
+        // If there's an error, send a 500 response
+        console.error('Error deleting student:', error.message);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+
 
 app.get('/api/academic_details', async (req, res) => {    
     // res.json(academicDetailsData);
