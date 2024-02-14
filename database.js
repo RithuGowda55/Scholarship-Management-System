@@ -380,27 +380,75 @@ class DatabaseManager {
     async deleteRecordss(Student_ID) {
         try {
             // Check if the student exists before attempting deletion
-            const [result] = await this.pool.query("SELECT COUNT(*) AS count FROM academic_details WHERE Student_ID = ?", [Student_ID]);
-            const count = result[0].count;
+            
 
-            if (count > 0) {
                 // Perform deletion of records
                 // You need to write appropriate SQL queries to delete records from all relevant tables
-                await this.pool.query("DELETE FROM academic_details WHERE Student_ID = ?", [Student_ID]);
-                await this.pool.query("DELETE FROM address_details WHERE Student_ID = ?", [Student_ID]);
-                await this.pool.query("DELETE FROM caste_income_details WHERE Student_ID = ?", [Student_ID]);
-                await this.pool.query("DELETE FROM sslc_details WHERE SSLC_CBSE_ICSE_Reg_Number = (SELECT SSLC_CBSE_ICSE_Reg_Number FROM academic_details WHERE Student_ID = ?)", [Student_ID]);
+                await this.pool.query(queries.AcademicDelete, [Student_ID]);
+                await this.pool.query(queries.AddressDelete, [Student_ID]);
+                await this.pool.query(queries.CasteIncomeDelete, [Student_ID]);
+                await this.pool.query(queries.SslcDelete, [Student_ID]);
                 // Add more deletion queries if needed
-                return true; // Deletion successful
-            } else {
-                // If the student does not exist, return false
-                return false;
-            }
+            
         } catch (error) {
             console.error('Error deleting records:', error.message);
              // Rethrow the error to handle it in the route handler
         }
     }
+
+    async deleteRecordss1(Student_ID) {
+        try {      
+                await this.pool.query("DELETE FROM academic_details WHERE Student_ID = ?", [Student_ID]);
+                await this.pool.query("DELETE FROM address_details WHERE Student_ID = ?", [Student_ID]);
+                await this.pool.query("DELETE FROM caste_income_details WHERE Student_ID = ?", [Student_ID]);
+                await this.pool.query("DELETE FROM sslc_details WHERE SSLC_CBSE_ICSE_Reg_Number = (SELECT SSLC_CBSE_ICSE_Reg_Number FROM academic_details WHERE Student_ID = ?)", [Student_ID]);
+                
+                return true; 
+            } 
+            
+        catch (error) {
+            console.error('Error deleting records:', error.message);
+        }
+    }
+
+    async deleteRecordss1(Student_ID) {
+        try {
+            // Check if the student exists before attempting deletion
+            const [academicDetailsResult] = await this.pool.query("SELECT COUNT(*) AS count FROM academic_details WHERE Student_ID = ?", [Student_ID]);
+            const [addressDetailsResult] = await this.pool.query("SELECT COUNT(*) AS count FROM address_details WHERE Student_ID = ?", [Student_ID]);
+            const [casteIncomeDetailsResult] = await this.pool.query("SELECT COUNT(*) AS count FROM caste_income_details WHERE Student_ID = ?", [Student_ID]);
+            const [sslcDetailsResult] = await this.pool.query("SELECT COUNT(*) AS count FROM sslc_details WHERE SSLC_CBSE_ICSE_Reg_Number = (SELECT SSLC_CBSE_ICSE_Reg_Number FROM academic_details WHERE Student_ID = ?)", [Student_ID]);
+    
+            const academicDetailsCount = academicDetailsResult[0].count;
+            const addressDetailsCount = addressDetailsResult[0].count;
+            const casteIncomeDetailsCount = casteIncomeDetailsResult[0].count;
+            const sslcDetailsCount = sslcDetailsResult[0].count;
+    
+            if (academicDetailsCount > 0 && addressDetailsCount > 0 && casteIncomeDetailsCount > 0 && sslcDetailsCount > 0) {
+                // Perform deletion of records
+                // Use transactions for atomicity
+                await this.pool.beginTransaction();
+    
+                await this.pool.query("DELETE FROM academic_details WHERE Student_ID = ?", [Student_ID]);
+                await this.pool.query("DELETE FROM address_details WHERE Student_ID = ?", [Student_ID]);
+                await this.pool.query("DELETE FROM caste_income_details WHERE Student_ID = ?", [Student_ID]);
+                await this.pool.query("DELETE FROM sslc_details WHERE SSLC_CBSE_ICSE_Reg_Number = (SELECT SSLC_CBSE_ICSE_Reg_Number FROM academic_details WHERE Student_ID = ?)", [Student_ID]);
+    
+                await this.pool.commit();
+    
+                return true; // Deletion successful
+            } else {
+                // If the student does not exist in any relevant table, return false
+                return false;
+            }
+        } catch (error) {
+            console.error('Error deleting records:', error.message);
+            // Rollback the transaction in case of an error
+            await this.pool.rollback();
+            throw error; // Rethrow the error to handle it in the route handler
+        }
+    }
+    
     
 };
 

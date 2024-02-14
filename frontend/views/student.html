@@ -1,144 +1,142 @@
- 
-
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register</title>
     <!-- <link rel="stylesheet" href="../public/style.css"> -->
-    
-<style>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            font-family: sans-serif;
+        }
+
+        body {
+            background-image: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url(banner.jpg);
+            background-position: center;
+            background-size: cover;
+        }
+
+        .container {
+            width: 360px;
+            height: 900px;
+            margin: 8% auto;
+            background: #fff;
+            border-radius: 5px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        h3 {
+            text-align: center;
+            margin-bottom: 40px;
+            color: #777;
+        }
+
+        .container form {
+            width: 280px;
+            position: absolute;
+            top: 100px;
+            left: 40px;
+            transition: 0.5s;
+        }
+
+        form input {
+            width: 100%;
+            padding: 10px 5px;
+            margin: 5px 0;
+            border: 0;
+            border-bottom: 1px solid #999;
+            outline: none;
+            background: transparent;
+        }
+
+        ::placeholder {
+            color: #777;
+        }
+
+        .btn-box {
+            width: 100%;
+            margin: 30px auto;
+            text-align: center;
+        }
+
+        form button {
+            width: 110px;
+            height: 35px;
+            margin: 0 10px;
+            background: linear-gradient(to right, #ff105f, #ffad06);
+            border-radius: 30px;
+            border: 0;
+            outline: none;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        #Form2 {
+            left: 450px;
+        }
+
+        #Form3 {
+            left: 450px;
+        }
+
+        #Form4 {
+            position: absolute;
+            left: 450px;
+            /* Move the form off-screen */
+            /* opacity: 0; Hide the form */
+            transition: left 0.3s ease, opacity 0.3s ease;
+            /* Add transition for smooth animation */
+        }
 
 
+        .step-row {
+            width: 360px;
+            height: 40px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 -1px 5px -1px #000;
+            position: relative;
+        }
 
-* {
-    margin: 0;
-    padding: 0;
-    font-family: sans-serif;
-}
+        .step-col {
+            width: 120px;
+            text-align: center;
+            color: #333;
+            position: relative;
+        }
 
-body {
-    background-image: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url(banner.jpg);
-    background-position: center;
-    background-size: cover;
-}
+        #progress {
+            position: absolute;
+            height: 100%;
+            width: 60px;
+            background: linear-gradient(to right, #ff105f, #ffad06);
+            transition: 1s;
+        }
 
-.container {
-    width: 360px;
-    height: 900px;
-    margin: 8% auto;
-    background: #fff;
-    border-radius: 5px;
-    position: relative;
-    overflow: hidden;
-}
-
-h3 {
-    text-align: center;
-    margin-bottom: 40px;
-    color: #777;
-}
-
-.container form {
-    width: 280px;
-    position: absolute;
-    top: 100px;
-    left: 40px;
-    transition: 0.5s;
-}
-
-form input {
-    width: 100%;
-    padding: 10px 5px;
-    margin: 5px 0;
-    border: 0;
-    border-bottom: 1px solid #999;
-    outline: none;
-    background: transparent;
-}
-
-::placeholder {
-    color: #777;
-}
-
-.btn-box {
-    width: 100%;
-    margin: 30px auto;
-    text-align: center;
-}
-
-form button {
-    width: 110px;
-    height: 35px;
-    margin: 0 10px;
-    background: linear-gradient(to right, #ff105f, #ffad06);
-    border-radius: 30px;
-    border: 0;
-    outline: none;
-    color: #fff;
-    cursor: pointer;
-}
-
-#Form2 {
-    left: 450px;
-}
-
-#Form3 {
-    left: 450px;
-}
-#Form4 {
-    position: absolute;
-    left: 450px; /* Move the form off-screen */
-    /* opacity: 0; Hide the form */
-    transition: left 0.3s ease, opacity 0.3s ease; /* Add transition for smooth animation */
-}
-
-
-.step-row {
-    width: 360px;
-    height: 40px;
-    margin: 0 auto;
-    display: flex;
-    align-items: center;
-    box-shadow: 0 -1px 5px -1px #000;
-    position: relative;
-}
-
-.step-col {
-    width: 120px;
-    text-align: center;
-    color: #333;
-    position: relative;
-}
-
-#progress {
-    position: absolute;
-    height: 100%;
-    width: 60px;
-    background: linear-gradient(to right, #ff105f, #ffad06);
-    transition: 1s;
-}
-
-#progress::after {
-    content: '';
-    height: 0;
-    width: 0;
-    border-top: 20px solid transparent;
-    border-bottom: 20px solid transparent;
-    position: absolute;
-    right: -20px;
-    top: 0;
-    border-left: 20px solid #ffad06;
-}
- 
-
-</style>
+        #progress::after {
+            content: '';
+            height: 0;
+            width: 0;
+            border-top: 20px solid transparent;
+            border-bottom: 20px solid transparent;
+            position: absolute;
+            right: -20px;
+            top: 0;
+            border-left: 20px solid #ffad06;
+        }
+    </style>
 </head>
+
 <body>
     <div class="container">
 
-<!--
+        <!--
     Table: address_details
 Student_ID int 
 Name text 
@@ -151,7 +149,7 @@ Pin_Code int
 Permanent_Address text 
 Domicile_of_Karnataka text 
 -->
-<form id="Form1" action="/Next1" method="post">
+        <!-- <form id="Form1" action="/Next1" method="post">
     <h3>Address Details</h3>
     <input type="text" name="Student_ID" placeholder="Student ID" required>
     <input type="text" name="Name" placeholder="Name" required>
@@ -168,8 +166,48 @@ Domicile_of_Karnataka text
             <div class="btn-box">   
                 <button type="submit" id="Next1" >Next</button>
             </div>
+        </form> -->
+
+        <form id="Form1" action="/Next1" method="post">
+            <h3>Address Details</h3>
+            <label for="Student_ID">Student ID<span>*</span></label>
+            <input type="text" name="Student_ID" id="Student_ID" placeholder="Student ID" required>
+
+            <label for="Name">Name<span>*</span></label>
+            <input type="text" name="Name" id="Name" placeholder="Name" required>
+
+            <label for="Gender">Gender<span>*</span></label>
+            <input type="text" name="Gender" id="Gender" placeholder="Gender" required>
+
+            <label for="Email">Email<span>*</span></label>
+            <input type="text" name="Email" id="Email" placeholder="Email" required>
+
+            <label for="Home_District">Home District<span>*</span></label>
+            <input type="text" name="Home_District" id="Home_District" placeholder="Home District" required>
+
+            <label for="Home_Taluk">Home Taluk<span>*</span></label>
+            <input type="text" name="Home_Taluk" id="Home_Taluk" placeholder="Home Taluk" required>
+
+            <label for="Assembly_Constituency">Assembly Constituency<span>*</span></label>
+            <input type="text" name="Assembly_Constituency" id="Assembly_Constituency"
+                placeholder="Assembly Constituency" required>
+
+            <label for="Pin_Code">Pin Code<span>*</span></label>
+            <input type="number" name="Pin_Code" id="Pin_Code" placeholder="Pin Code" required>
+
+            <label for="Permanent_Address">Permanent Address<span>*</span></label>
+            <input type="text" name="Permanent_Address" id="Permanent_Address" placeholder="Permanent Address" required>
+
+            <label for="Domicile_of_Karnataka">Domicile of Karnataka<span>*</span></label>
+            <input type="text" name="Domicile_of_Karnataka" id="Domicile_of_Karnataka"
+                placeholder="Domicile of Karnataka" required>
+
+            <div class="btn-box">
+                <button type="submit" id="Next1">Next</button>
+            </div>
         </form>
-<!-- 
+
+        <!-- 
     Table: academic_details
 
 Columns:
@@ -190,29 +228,31 @@ State_Scholarship_Portal
 -->
 
 
-<form id="Form2" action="/Next2" method="post">
-    <h3>Academic Details</h3>
-    <input type="text" name="Student_ID" placeholder="Student ID" required>
-    <input type="text" name="SSLC_CBSE_ICSE_Reg_Number" placeholder="SSLC/CBSE/ICSE Reg Number" required>
-    <input type="text" name="Student_Name_as_in_SSLC_CBSE_ICSE" placeholder="Student Name as in SSLC/CBSE/ICSE" required>
-    <input type="text" name="College_District" placeholder="College District" required>
-    <input type="text" name="College_Taluk" placeholder="College Taluk" required>
-    <input type="text" name="University_or_Board_Name" placeholder="University or Board Name" required>
-    <input type="text" name="College_Name" placeholder="College Name" required>
-    <input type="text" name="Course_and_Course_Year" placeholder="Course and Course Year" required>
-    <input type="text" name="Course_Discipline_or_Branch" placeholder="Course Discipline or Branch" required>
-    <input type="text" name="University_Registration_or_SATS_Number" placeholder="University Registration or SATS Number" required>
-    <input type="text" name="Course_Duration" placeholder="Course Duration" required>
-    <input type="text" name="Counselling_Details" placeholder="Counselling Details" required>
-    <input type="text" name="Counselling_Seat_Type" placeholder="Counselling Seat Type" required>
-    <input type="text" name="State_Scholarship_Portal" placeholder="State Scholarship Portal" required>
+        <form id="Form2" action="/Next2" method="post">
+            <h3>Academic Details</h3>
+            <input type="hidden" id="studentId2" name="Student_ID" value="">
+            <input type="text" name="SSLC_CBSE_ICSE_Reg_Number" placeholder="SSLC/CBSE/ICSE Reg Number" required>
+            <input type="text" name="Student_Name_as_in_SSLC_CBSE_ICSE" placeholder="Student Name as in SSLC/CBSE/ICSE"
+                required>
+            <input type="text" name="College_District" placeholder="College District" required>
+            <input type="text" name="College_Taluk" placeholder="College Taluk" required>
+            <input type="text" name="University_or_Board_Name" placeholder="University or Board Name" required>
+            <input type="text" name="College_Name" placeholder="College Name" required>
+            <input type="text" name="Course_and_Course_Year" placeholder="Course and Course Year" required>
+            <input type="text" name="Course_Discipline_or_Branch" placeholder="Course Discipline or Branch" required>
+            <input type="text" name="University_Registration_or_SATS_Number"
+                placeholder="University Registration or SATS Number" required>
+            <input type="text" name="Course_Duration" placeholder="Course Duration" required>
+            <input type="text" name="Counselling_Details" placeholder="Counselling Details" required>
+            <input type="text" name="Counselling_Seat_Type" placeholder="Counselling Seat Type" required>
+            <input type="text" name="State_Scholarship_Portal" placeholder="State Scholarship Portal" required>
 
             <div class="btn-box">
                 <button type="button" id="Back1">Back</button>
                 <button type="submit" id="Next2">Next</button>
             </div>
         </form>
-<!-- 
+        <!-- 
         Table: caste_income_details
 Columns:
 Student_ID int 
@@ -228,18 +268,20 @@ Income_in_Rs
  -->
 
 
- <form id="Form3" action="/Next3" method="post">
-    <h3>Caste and Income Certificate Details</h3>
-    <input type="text" name="Student_ID" placeholder="Student ID" required>
-    <input type="text" name="Religion" placeholder="Religion" required>
-    <input type="text" name="Category" placeholder="Category" required>
-    <input type="text" name="Caste_Certificate_Number" placeholder="Caste Certificate Number" required>
-    <input type="text" name="Name_as_in_Caste_Certificate" placeholder="Name as in Caste Certificate" required>
-    <input type="text" name="Caste" placeholder="Caste" required>
-    <input type="text" name="Subcaste" placeholder="Subcaste" >
-    <input type="text" name="Income_Certificate_Number" placeholder="Income Certificate Number" required>
-    <input type="text" name="Name_as_in_Income_Certificate" placeholder="Name as in Income Certificate" required>
-    <input type="number" name="Income_in_Rs" placeholder="Income in Rs" required>
+        <form id="Form3" action="/Next3" method="post">
+            <h3>Caste and Income Certificate Details</h3>
+            <!-- <input type="text" name="Student_ID" placeholder="Student ID" required> -->
+            <input type="hidden" id="studentId3" name="Student_ID" value="">
+            <input type="text" name="Religion" placeholder="Religion" required>
+            <input type="text" name="Category" placeholder="Category" required>
+            <input type="text" name="Caste_Certificate_Number" placeholder="Caste Certificate Number" required>
+            <input type="text" name="Name_as_in_Caste_Certificate" placeholder="Name as in Caste Certificate" required>
+            <input type="text" name="Caste" placeholder="Caste" required>
+            <input type="text" name="Subcaste" placeholder="Subcaste">
+            <input type="text" name="Income_Certificate_Number" placeholder="Income Certificate Number" required>
+            <input type="text" name="Name_as_in_Income_Certificate" placeholder="Name as in Income Certificate"
+                required>
+            <input type="number" name="Income_in_Rs" placeholder="Income in Rs" required>
 
 
 
@@ -247,8 +289,8 @@ Income_in_Rs
                 <button type="button" id="Back2">Back</button>
                 <button type="submit" id="Next3">Next</button>
             </div>
-        </form> 
-<!-- 
+        </form>
+        <!-- 
         Table: sslc_details
 Columns:
 SSLC_CBSE_ICSE_Reg_Number text 
@@ -258,12 +300,13 @@ DOB
 -->
 
 
-<form id="Form4" action="/Next4" method="post">
-    <h3>SSLC Details</h3>
-    <input type="text" name="SSLC_CBSE_ICSE_Reg_Number" placeholder="SSLC/CBSE/ICSE Reg Number" required>
-    <input type="text" name="Board_Type" placeholder="Board Type" required>
-    <input type="number" name="Year_of_Passing" placeholder="Year of Passing" required>
-    <input type="date" name="DOB" placeholder="Date of Birth" required>
+        <form id="Form4" action="/Next4" method="post">
+            <h3>SSLC Details</h3>
+            <!-- <input type="text" name="SSLC_CBSE_ICSE_Reg_Number" placeholder="SSLC/CBSE/ICSE Reg Number" required> -->
+            <input type="hidden" id="sslcRegNumber" name="SSLC_CBSE_ICSE_Reg_Number" value="">
+            <input type="text" name="Board_Type" placeholder="Board Type" required>
+            <input type="number" name="Year_of_Passing" placeholder="Year of Passing" required>
+            <input type="date" name="DOB" placeholder="Date of Birth" required>
 
             <div class="btn-box">
                 <button type="button" id="Back3">Back</button>
@@ -271,7 +314,7 @@ DOB
             </div>
         </form>
 
-        
+
         <div class="step-row">
             <div id="progress"></div>
             <div class="step-col"><small>step 1</small></div>
@@ -281,7 +324,7 @@ DOB
 
         </div>
 
-         <!--  
+        <!--  
         <form >
             <h3>Create Account</h3>
             <input type="text" placeholder="Email" required>
@@ -302,7 +345,7 @@ DOB
             </div>
         </form> -->
 
-         
+
     </div>
 
     <script>
@@ -323,87 +366,124 @@ DOB
         var progress = document.getElementById("progress");
 
 
-        Next1.onclick = function(){
+        Next1.onclick = function () {
+            // if (!isFormValid(Form1)) {
+            //     alert("Please fill in all required fields before proceeding.");
+            //     return false; // Prevent default behavior if form is not valid
+            // }
             Form1.style.left = "-450px";
             Form2.style.left = "40px";
             progress.style.width = "160px";
         }
+
         
-        Back1.onclick = function(){
+
+        Back1.onclick = function () {
             Form1.style.left = "40px";
             Form2.style.left = "450px";
             progress.style.width = "60px";
 
         }
 
-        Next2.onclick = function(){
+        Next2.onclick = function () {
+            // if (!isFormValid(Form2)) {
+            //     alert("Please fill in all required fields before proceeding.");
+            //     return false; // Prevent default behavior if form is not valid
+            // }
             Form2.style.left = "-450px";
             Form3.style.left = "40px";
             progress.style.width = "240px";
 
         }
-        Back2.onclick = function(){
+        Back2.onclick = function () {
             Form2.style.left = "40px";
             Form3.style.left = "450px";
             progress.style.width = "160px";
 
         }
 
-        Next3.onclick = function(){
+        Next3.onclick = function () {
+            // if (!isFormValid(Form3)) {
+            //     alert("Please fill in all required fields before proceeding.");
+            //     return false; // Prevent default behavior if form is not valid
+            // }
             Form3.style.left = "-450px";
             Form4.style.left = "40px";
             progress.style.width = "340px";
 
         }
-        Back3.onclick = function(){
+        Back3.onclick = function () {
             Form3.style.left = "40px";
             Form4.style.left = "450px";
             progress.style.width = "240px";
 
         }
-    //     document.getElementById("Submit").addEventListener("click", function() {
-    // // Collect data from all forms
-    // var formData1 = new FormData(document.getElementById("Form1"));
-    // var formData2 = new FormData(document.getElementById("Form2"));
-    // var formData3 = new FormData(document.getElementById("Form3"));
-    // var formData4 = new FormData(document.getElementById("Form4"));
+        //     document.getElementById("Submit").addEventListener("click", function() {
+        // // Collect data from all forms
+        // var formData1 = new FormData(document.getElementById("Form1"));
+        // var formData2 = new FormData(document.getElementById("Form2"));
+        // var formData3 = new FormData(document.getElementById("Form3"));
+        // var formData4 = new FormData(document.getElementById("Form4"));
 
-    // // Send each form data to the server using AJAX
-    // submitFormData(formData1, "/submit/address");
-    // submitFormData(formData2, "/submit/academic");
-    // submitFormData(formData3, "/submit/caste_income");
-    // submitFormData(formData4, "/submit/sslc");
-// });
+        // // Send each form data to the server using AJAX
+        // submitFormData(formData1, "/submit/address");
+        // submitFormData(formData2, "/submit/academic");
+        // submitFormData(formData3, "/submit/caste_income");
+        // submitFormData(formData4, "/submit/sslc");
+        // });
 
-// Function to submit form data using AJAX
-function submitFormData(formData, url) {
-    fetch(url, {
-        method: 'POST',
-        body: formData
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
+        // Function to submit form data using AJAX
+        function submitFormData(formData, url) {
+            fetch(url, {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.text();
+
+                })
+                .then(data => {
+                    console.log('Data inserted successfully:', data);
+                    // Optionally, you can show a success message to the user
+                    // or redirect them to another page
+                })
+                .catch(error => {
+                    console.error('There was a problem with your fetch operation:', error);
+                    // Optionally, you can show an error message to the user
+                });
         }
-        return response.text();
-        
-    })
-    .then(data => {
-        console.log('Data inserted successfully:', data);
-        // Optionally, you can show a success message to the user
-        // or redirect them to another page
-    })
-    .catch(error => {
-        console.error('There was a problem with your fetch operation:', error);
-        // Optionally, you can show an error message to the user
-    });
-}
 
-    function navigateToAcknowledge(){
-        window.location.href= 'acknowledge.html';
-    }
+        function navigateToAcknowledge() {
+            window.location.href = 'acknowledge.html';
+        }
+
+        // Get the Student_ID from the first form
+        const studentId = document.querySelector('#Student_ID').value;
+        const sslcRegNumber = document.querySelector('#SSLC_CBSE_ICSE_Reg_Number').value;
+
+        // Set the Student_ID value for the second and third forms
+        document.querySelector('#studentId2').value = studentId;
+        document.querySelector('#studentId3').value = studentId;
+        document.querySelector('#sslcRegNumber').value = sslcRegNumber;
+
+
+        // function isFormValid(form) {
+        //     var requiredFields = form.querySelectorAll("input[required]");
+        //     for (var i = 0; i < requiredFields.length; i++) {
+        //         if (requiredFields[i].value.trim() === "") {
+        //             return false; // Return false if any required field is empty
+        //         }
+        //     }
+        //     return true; // Return true if all required fields are filled
+        // }
+
+
 
     </script>
-     
-</body> 
+
+</body>
+
 </html>
