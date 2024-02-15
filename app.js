@@ -5,7 +5,7 @@ const mysql = require('mysql2');
 const router = express.Router();
 // const dbManager = new DatabaseManager();
 
-// const path = require('path'); 
+const path = require('path'); 
 
 // Create an Express application
 const app = express();
@@ -14,7 +14,8 @@ const port = 5500;
 // app.set('views', path.join(__dirname, 'views'));
 
 // Set the view engine to 'ejs'
-// app.set('view engine', 'ejs');
+// app.set('view engine', 'html');
+app.set('views', path.join(__dirname, 'frontend/Homepage'));
 
 // Database handler
 const DatabaseManager = require('./database');
@@ -114,8 +115,32 @@ app.get('/about', (req, res) => {
     res.sendFile(__dirname + '/frontend/Homepage/about.html');
 });
 
-app.get('/announcements', (req, res) => {
-    res.sendFile(__dirname + '/frontend/Homepage/announcement.html');
+app.get('/announcements', async (req, res) => {
+    try {
+        // Query to fetch data from the database
+        const announ = await DBHandler.displayAnnouncement();
+
+        // Execute the query
+        if (announ){
+            // res.json(announ);
+            // res.render('announcement', { announ });
+            res.sendFile(path.join(__dirname, 'frontend/Homepage/announcement.html'));
+            // res.status(200).sendFile(path.join(__dirname, '/frontend/Homepage/announcement.html'));
+            // res.sendFile(__dirname + '/frontend/Homepage/announcement.html');
+            // res.render('announcement', { announcements });
+
+            // Render HTML form with fetched data
+            
+        }
+    } catch (error) {
+        console.error('Error fetching data from database: ', error);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
+app.get('/api/announcements',async  (req, res) => {
+    const success = await DBHandler.displayAnnouncement();
+    res.send(success)
 });
 
 app.get('/announce', (req, res) => {
@@ -132,13 +157,20 @@ app.put('/upannouncements', async (req, res) => {
     const success = await DBHandler.updateDates(formData.SchemeClosingDate, formData.DefectiveAppVerificationDate, formData.InstituteVerificationDate, formData.DNO_SNO_MNO_VerificationDate,formData.SchemeNumber );
     
     if (success) {
+        sendNotificationToAdmin('Announcement updated successfully.', 'success');
         res.status(200).send("Announcement updated successfully. Notification sent to admin.");
         // Send notification to admin (e.g., email, message)
     } else {
+        sendNotificationToAdmin('Unable to update announcement. Please try again later.', 'error');
         res.status(500).send("Unable to update announcement. Please try again later.");
         // Handle error or send notification to admin about the error
     }
 });
+
+function sendNotificationToAdmin(message) {
+    // Implement code to send a push notification to the admin with the provided message
+    console.log('Push notification sent to admin:', message);
+}
 
 
 app.get('/addannouncements', (req, res) => {

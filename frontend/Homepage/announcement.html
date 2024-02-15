@@ -3,126 +3,114 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Scholarship Information</title>
+    <title>Announcement Dashboard</title>
     <style>
+        /* Styles for Announcement Dashboard */
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
             background-color: #f4f4f4;
-            color: #333;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-        }
-        th, td {
-            padding: 8px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-            
-        }
-        th {
-            background-color: #007bff;
-            color: #fff;
-        }
-        tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
-        tr:hover {
-            background-color: #ddd;
-        }
-        a {
-            color: #007bff;
-            text-decoration: none;
         }
 
         h1 {
-            padding: 20px;
+            text-align: center;
+            margin-top: 30px;
+            color: #333;
         }
+
+        #tables-container {
+            margin: 20px auto;
+            width: 80%;
+            max-width: 1200px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+        }
+
+        caption {
+            font-size: 1.2em;
+            font-weight: bold;
+            padding: 10px;
+            background-color: #007bff;
+            color: #fff;
+            text-align: left;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #f9f9f9;
+        }
+
     </style>
 </head>
 <body>
-    <h1>Announcements</h1><br>
-    <table id="tab">
-        <thead>
-            <tr>
-                <th>Scheme Name</th>
-                <th>Scheme Closing Date</th>
-                <th>Defective Application Verification Date</th>
-                <th>Institute Verification</th>
-                <th>DNO/SNO/MNO Verification</th>
-                <!-- <th>Guidelines</th> -->
-                <!-- <th>FAQ</th> -->
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td data-scheme="Pre-matric Scholarship for Students with Disabilities">Pre-matric Scholarship for Students with Disabilities</td>
-                <td contenteditable="true" data-field="closing_date">2024-01-15</td>
-                <td contenteditable="true" data-field="verification_date">2024-02-15</td>
-                <td contenteditable="true">Open till 15-02-2024</td>
-                <td contenteditable="true">Open till 2024-02-26</td>
-                <!-- <td><a href="#">Guidelines</a></td> -->
-                <!-- <td><a href="#">FAQ</a></td> -->
-            </tr>
-            <tr>
-                <td data-scheme="Post-matric Scholarship for Students with Disabilities">Post-matric Scholarship for Students with Disabilities</td>
-                <td contenteditable="true" data-field="closing_date">Closed on 15-01-2024</td>
-                <td contenteditable="true" data-field="verification_date">Open till 15-02-2024</td>
-                <td contenteditable="true">Open till 15-02-2024</td>
-                <td contenteditable="true">Open till 2024-02-26</td>
-                <!-- <td><a href="#">Guidelines</a></td> -->
-                <!-- <td><a href="#">FAQ</a></td> -->
-            </tr>
-            <tr>
-                <td data-scheme="Scholarships for Top Class Education for students with disabilities.">Scholarships for Top Class Education for students with disabilities.</td>
-                <td contenteditable="true" data-field="closing_date">Closed on 15-01-2024</td>
-                <td contenteditable="true" data-field="verification_date">Open till 15-02-2024</td>
-                <td contenteditable="true">Open till 15-02-2024</td>
-                <td contenteditable="true">Open till 2024-02-26</td>
-                <!-- <td><a href="#">Guidelines</a></td> -->
-                <!-- <td><a href="#">FAQ</a></td> -->
-            </tr>
-            
-        </tbody>
-    </table>
-    <!-- <button onclick="updateDates()">Update Dates</button> -->
+    <h1>Announcement Dashboard</h1>
+    
+    <div id="tables-container"></div>
+
     <script>
-        // Function to update dates on the server
-        function updateDates() {
-            const updatedDates = [];
-            const rows = document.querySelectorAll('#tab tbody tr');
-            rows.forEach(row => {
-                const schemeName = row.querySelector('td[data-scheme]').dataset.scheme;
-                const closingDate = row.querySelector('[data-field="closing_date"]').innerText;
-                const verificationDate = row.querySelector('[data-field="verification_date"]').innerText;
+        // Function to fetch data from backend API and create tables dynamically
+        function createTables() {
+            // Define table configurations for announcements
+            const announcementTableConfiguration = {
+                tableName: 'Announcements',
+                endpoint: '/api/announcements',
+                fields: ['SchemeNumber', 'SchemeName', 'SchemeClosingDate', 'DefectiveAppVerificationDate', 'InstituteVerificationDate', 'DNO_SNO_MNO_VerificationDate']
+            };
 
-                updatedDates.push({
-                    scheme_name: schemeName,
-                    closing_date: closingDate,
-                    verification_date: verificationDate,
-                });
-            });
+            // Container to hold the announcement table
+            const tablesContainer = document.getElementById('tables-container');
 
-            // Assuming you have an API endpoint for updating announcement dates
-            fetch('/api/update_announcement_dates', {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(updatedDates)
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => console.log('Dates updated successfully:', data))
-            .catch(error => console.error('Error updating dates:', error));
+            // Fetch data for announcements
+            fetch(announcementTableConfiguration.endpoint)
+                .then(response => response.json())
+                .then(data => {
+                    // Create table element
+                    const table = document.createElement('table');
+                    table.innerHTML = `
+                        <caption>${announcementTableConfiguration.tableName}</caption>
+                        <thead>
+                            <tr>
+                                ${announcementTableConfiguration.fields.map(field => `<th>${field}</th>`).join('')}
+                            </tr>
+                        </thead>
+                        <tbody id="${announcementTableConfiguration.tableName.toLowerCase()}-body">
+                            <!-- Table body will be populated dynamically -->
+                        </tbody>
+                    `;
+                    tablesContainer.appendChild(table);
+
+                    // Populate table with data
+                    const tableBody = document.getElementById(`${announcementTableConfiguration.tableName.toLowerCase()}-body`);
+                    data.forEach(row => {
+                        const tableRow = document.createElement('tr');
+                        // Populate table row with data fields
+                        tableRow.innerHTML = `
+                            ${announcementTableConfiguration.fields.map(field => `<td>${row[field]}</td>`).join('')}
+                        `;
+                        tableBody.appendChild(tableRow);
+                    });
+                })
+                .catch(error => console.error(`Error fetching data for ${announcementTableConfiguration.tableName}:`, error));
         }
+
+        // Call the function to create tables when the page loads
+        createTables();
     </script>
 </body>
 </html>

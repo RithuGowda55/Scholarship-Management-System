@@ -232,6 +232,13 @@ WHERE
     );
     
     `,
+
+    DisplayAnnouncement:
+    `
+    SELECT * FROM announce;
+    `,
+
+
     UpdateDates:
         `
     UPDATE announce
@@ -408,6 +415,17 @@ class DatabaseManager {
         }
     }
 
+    async displayAnnouncement() {
+        try {
+            const [rows] = await this.pool.query(queries.DisplayAnnouncement);
+            return rows;
+
+        } catch (error) {
+            console.error('Error creating: ', error.message);
+            return [];
+        }
+    }
+
     async updateDates(SchemeClosingDate, DefectiveAppVerificationDate, InstituteVerificationDate, DNO_SNO_MNO_VerificationDate,SchemeNumber ) {
         try {
             await this.pool.query(queries.UpdateDates, [SchemeClosingDate, DefectiveAppVerificationDate, InstituteVerificationDate, DNO_SNO_MNO_VerificationDate,SchemeNumber]);
@@ -430,6 +448,8 @@ class DatabaseManager {
             return [];
         }
     }
+
+    
 
 
 
