@@ -38,24 +38,13 @@
             text-decoration: none;
         }
 
-         /* #tab{
-             height: 950;
-            width: 90%;
-            display: flex;
-            flex-direction: column;
-            margin: auto; 
-        }  */
-        h1{
-            flex-direction: column;
-            margin: auto;
-            display: flex;
+        h1 {
             padding: 20px;
         }
-
     </style>
 </head>
 <body>
-    <h1 >Announcements</h1><br>
+    <h1>Announcements</h1><br>
     <table id="tab">
         <thead>
             <tr>
@@ -64,39 +53,76 @@
                 <th>Defective Application Verification Date</th>
                 <th>Institute Verification</th>
                 <th>DNO/SNO/MNO Verification</th>
-                <th>Guidelines</th>
-                <th>FAQ</th>
+                <!-- <th>Guidelines</th> -->
+                <!-- <th>FAQ</th> -->
             </tr>
         </thead>
         <tbody>
             <tr>
-                <td>Pre-matric Scholarship for Students with Disabilities</td>
-                <td>Closed on 15-01-2024</td>
-                <td>Open till 15-02-2024</td>
-                <td>Open till 15-02-2024</td>
-                <td>Open till 2024-02-26</td>
-                <td><a href="#">Guidelines</a></td>
-                <td><a href="#">FAQ</a></td>
+                <td data-scheme="Pre-matric Scholarship for Students with Disabilities">Pre-matric Scholarship for Students with Disabilities</td>
+                <td contenteditable="true" data-field="closing_date">2024-01-15</td>
+                <td contenteditable="true" data-field="verification_date">2024-02-15</td>
+                <td contenteditable="true">Open till 15-02-2024</td>
+                <td contenteditable="true">Open till 2024-02-26</td>
+                <!-- <td><a href="#">Guidelines</a></td> -->
+                <!-- <td><a href="#">FAQ</a></td> -->
             </tr>
             <tr>
-                <td>Post-matric Scholarship for Students with Disabilities</td>
-                <td>Closed on 15-01-2024</td>
-                <td>Open till 15-02-2024</td>
-                <td>Open till 15-02-2024</td>
-                <td>Open till 2024-02-26</td>
-                <td><a href="#">Guidelines</a></td>
-                <td><a href="#">FAQ</a></td>
+                <td data-scheme="Post-matric Scholarship for Students with Disabilities">Post-matric Scholarship for Students with Disabilities</td>
+                <td contenteditable="true" data-field="closing_date">Closed on 15-01-2024</td>
+                <td contenteditable="true" data-field="verification_date">Open till 15-02-2024</td>
+                <td contenteditable="true">Open till 15-02-2024</td>
+                <td contenteditable="true">Open till 2024-02-26</td>
+                <!-- <td><a href="#">Guidelines</a></td> -->
+                <!-- <td><a href="#">FAQ</a></td> -->
             </tr>
             <tr>
-                <td>Scholarships for Top Class Education for students with disabilities.</td>
-                <td>Closed on 15-01-2024</td>
-                <td>Open till 15-02-2024</td>
-                <td>Open till 15-02-2024</td>
-                <td>Open till 2024-02-26</td>
-                <td><a href="#">Guidelines</a></td>
-                <td><a href="#">FAQ</a></td>
+                <td data-scheme="Scholarships for Top Class Education for students with disabilities.">Scholarships for Top Class Education for students with disabilities.</td>
+                <td contenteditable="true" data-field="closing_date">Closed on 15-01-2024</td>
+                <td contenteditable="true" data-field="verification_date">Open till 15-02-2024</td>
+                <td contenteditable="true">Open till 15-02-2024</td>
+                <td contenteditable="true">Open till 2024-02-26</td>
+                <!-- <td><a href="#">Guidelines</a></td> -->
+                <!-- <td><a href="#">FAQ</a></td> -->
             </tr>
+            
         </tbody>
     </table>
+    <!-- <button onclick="updateDates()">Update Dates</button> -->
+    <script>
+        // Function to update dates on the server
+        function updateDates() {
+            const updatedDates = [];
+            const rows = document.querySelectorAll('#tab tbody tr');
+            rows.forEach(row => {
+                const schemeName = row.querySelector('td[data-scheme]').dataset.scheme;
+                const closingDate = row.querySelector('[data-field="closing_date"]').innerText;
+                const verificationDate = row.querySelector('[data-field="verification_date"]').innerText;
+
+                updatedDates.push({
+                    scheme_name: schemeName,
+                    closing_date: closingDate,
+                    verification_date: verificationDate,
+                });
+            });
+
+            // Assuming you have an API endpoint for updating announcement dates
+            fetch('/api/update_announcement_dates', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(updatedDates)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => console.log('Dates updated successfully:', data))
+            .catch(error => console.error('Error updating dates:', error));
+        }
+    </script>
 </body>
 </html>

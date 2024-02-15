@@ -4,7 +4,7 @@ const queries = {
     // ACADEMIC DETAILS QUERIES
 
     CreateAcademicTable:
-    `
+        `
     CREATE TABLE IF NOT EXISTS academic_details (
         Student_ID INT PRIMARY KEY,
         SSLC_CBSE_ICSE_Reg_Number VARCHAR(50) NOT NULL,
@@ -24,7 +24,7 @@ const queries = {
 
     `,
     InsertIntoAcademicTable:
-    `
+        `
     INSERT INTO academic_details (Student_ID, SSLC_CBSE_ICSE_Reg_Number, Student_Name_as_in_SSLC_CBSE_ICSE, College_District, College_Taluk, University_or_Board_Name, College_Name, Course_and_Course_Year, Course_Discipline_or_Branch, University_Registration_or_SATS_Number, Course_Duration, Counselling_Details, Counselling_Seat_Type, State_Scholarship_Portal) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
 
     `,
@@ -34,7 +34,7 @@ const queries = {
     // CASTE TABLE QUERIES
 
     CreateCasteTable:
-    `
+        `
     CREATE TABLE IF NOT EXISTS caste_income_details (
         Student_ID INT PRIMARY KEY,
         Religion VARCHAR(50) NOT NULL,
@@ -51,11 +51,11 @@ const queries = {
     `,
 
     InsertIntoCasteTable:
-    'INSERT INTO caste_income_details (Student_ID, Religion, Category, Caste_Certificate_Number, Name_as_in_Caste_Certificate, Caste, Subcaste, Income_Certificate_Number, Name_as_in_Income_Certificate, Income_in_Rs) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+        'INSERT INTO caste_income_details (Student_ID, Religion, Category, Caste_Certificate_Number, Name_as_in_Caste_Certificate, Caste, Subcaste, Income_Certificate_Number, Name_as_in_Income_Certificate, Income_in_Rs) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
 
 
     CreateAddressTable:
-    `
+        `
     CREATE TABLE IF NOT EXISTS address_details (
         Student_ID INT PRIMARY KEY,
         Name VARCHAR(255),
@@ -71,7 +71,7 @@ const queries = {
     `,
 
     InsertIntoAddressTable:
-    `
+        `
     INSERT INTO address_details
     (Student_ID, Name, Gender, Email, Home_District, Home_Taluk, Assembly_Constituency, Pin_Code, Permanent_Address, Domicile_of_Karnataka)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
@@ -80,7 +80,7 @@ const queries = {
     // sslc details
 
     CreateSslcTable:
-    `
+        `
     CREATE TABLE IF NOT EXISTS sslc_details (
         SSLC_CBSE_ICSE_Reg_Number VARCHAR(50) PRIMARY KEY,
         Board_Type ENUM('SSLC', 'CBSE', 'ICSE', 'OTHER STATE BOARD', 'KOS', 'NIOS') NOT NULL,
@@ -91,10 +91,10 @@ const queries = {
     `,
 
     InsertIntoSslcTable:
-    `INSERT INTO sslc_details (SSLC_CBSE_ICSE_Reg_Number, Board_Type, Year_of_Passing, DOB) VALUES (?, ?, ?, ?)`,
+        `INSERT INTO sslc_details (SSLC_CBSE_ICSE_Reg_Number, Board_Type, Year_of_Passing, DOB) VALUES (?, ?, ?, ?)`,
 
     CreateStudentView:
-    `
+        `
     CREATE OR REPLACE VIEW student_view AS
     SELECT 
         a.Student_ID,
@@ -114,18 +114,18 @@ const queries = {
     `,
 
     GetStudentView:
-    `
+        `
     SELECT * FROM student_view;
     `,
 
     GetStudentViewById:
-    `
+        `
     SELECT * FROM student_view WHERE Student_ID = ?;
     `,
 
     CreateAdminView:
-    
-    `
+
+        `
     CREATE OR REPLACE VIEW admin_view AS
 SELECT 
     a.Student_ID,
@@ -175,53 +175,84 @@ WHERE
 
     `,
     GetAdminView:
-    `
+        `
     SELECT * FROM admin_view ;
     
     `,
     GetAdminViewById:
-    `
+        `
     SELECT * FROM admin_view WHERE Student_ID = ?;
     `,
 
     AcademicDetailsData:
-    `select * from academic_details;`,
+        `select * from academic_details;`,
 
     AddressDetailsData:
-    `select * from address_details;`,
+        `select * from address_details;`,
 
     CasteIncomeDetailsData:
-    `select * from caste_income_details;`,
+        `select * from caste_income_details;`,
 
     SslcDetailsData:
-    `select * from sslc_details;`,
+        `select * from sslc_details;`,
 
     AcademicDelete:
-    `
+        `
     DELETE FROM academic_details WHERE Student_ID = ?;
     `,
 
     AddressDelete:
-    `
+        `
     DELETE FROM caste_income_details WHERE Student_ID = ?;
     `,
     CasteIncomeDelete:
-    `
+        `
     DELETE FROM address_details WHERE Student_ID = ?;
     `,
     SslcDelete:
-    `
+        `
     DELETE FROM sslc_details WHERE SSLC_CBSE_ICSE_Reg_Number = (
         SELECT SSLC_CBSE_ICSE_Reg_Number FROM academic_details WHERE Student_ID = ?
         );
     `,
 
     ViewTigger:
-    `
+        `
     select * from audit_trail;
-    `
+    `,
 
+    AnnouncementDates:
+        `CREATE TABLE IF NOT EXISTS announce (
+        SchemeNumber INT PRIMARY KEY,
+        SchemeName VARCHAR(255) NOT NULL,
+        SchemeClosingDate DATE NOT NULL,
+        DefectiveAppVerificationDate DATE,
+        InstituteVerificationDate DATE,
+        DNO_SNO_MNO_VerificationDate DATE
+    );
     
+    `,
+    UpdateDates:
+        `
+    UPDATE announce
+    SET 
+        SchemeClosingDate = ?,
+        DefectiveAppVerificationDate = ?,
+        InstituteVerificationDate = ?,
+        DNO_SNO_MNO_VerificationDate = ?
+    WHERE
+        SchemeNumber = ?;
+
+    `,
+
+    InsertIntoAnnouncement:
+        `
+    INSERT INTO announce(SchemeNumber, SchemeName, SchemeClosingDate, 
+        DefectiveAppVerificationDate, InstituteVerificationDate, 
+        DNO_SNO_MNO_VerificationDate)
+VALUES (?, ?, ?, ?, ?, ?);
+`
+
 
 };
 
@@ -247,6 +278,8 @@ class DatabaseManager {
             await this.pool.query(queries.CreateSslcTable);
             await this.pool.query(queries.CreateStudentView);
             await this.pool.query(queries.CreateAdminView);
+            await this.pool.query(queries.AnnouncementDates);
+
 
         } catch (error) {
             console.error('Error creating: ', error.message);
@@ -261,7 +294,7 @@ class DatabaseManager {
             console.error('Error creating: ', error.message);
         }
     }
-    
+
     // USER QUERIES
 
     // for academic_deatails
@@ -269,7 +302,7 @@ class DatabaseManager {
     async insertIntoAcademicTable(Student_ID, SSLC_CBSE_ICSE_Reg_Number, Student_Name_as_in_SSLC_CBSE_ICSE, College_District, College_Taluk, University_or_Board_Name, College_Name, Course_and_Course_Year, Course_Discipline_or_Branch, University_Registration_or_SATS_Number, Course_Duration, Counselling_Details, Counselling_Seat_Type, State_Scholarship_Portal) {
         try {
             await this.pool.query(queries.InsertIntoAcademicTable,
-            [Student_ID, SSLC_CBSE_ICSE_Reg_Number, Student_Name_as_in_SSLC_CBSE_ICSE, College_District, College_Taluk, University_or_Board_Name, College_Name, Course_and_Course_Year, Course_Discipline_or_Branch, University_Registration_or_SATS_Number, Course_Duration, Counselling_Details, Counselling_Seat_Type, State_Scholarship_Portal]);
+                [Student_ID, SSLC_CBSE_ICSE_Reg_Number, Student_Name_as_in_SSLC_CBSE_ICSE, College_District, College_Taluk, University_or_Board_Name, College_Name, Course_and_Course_Year, Course_Discipline_or_Branch, University_Registration_or_SATS_Number, Course_Duration, Counselling_Details, Counselling_Seat_Type, State_Scholarship_Portal]);
         } catch (error) {
             console.error('Error creating: ', error.message);
         }
@@ -279,7 +312,7 @@ class DatabaseManager {
     async insertIntoCasteTable(Student_ID, Religion, Category, Caste_Certificate_Number, Name_as_in_Caste_Certificate, Caste, Subcaste, Income_Certificate_Number, Name_as_in_Income_Certificate, Income_in_Rs) {
         try {
             await this.pool.query(queries.InsertIntoCasteTable,
-            [Student_ID, Religion, Category, Caste_Certificate_Number, Name_as_in_Caste_Certificate, Caste, Subcaste, Income_Certificate_Number, Name_as_in_Income_Certificate, Income_in_Rs]);
+                [Student_ID, Religion, Category, Caste_Certificate_Number, Name_as_in_Caste_Certificate, Caste, Subcaste, Income_Certificate_Number, Name_as_in_Income_Certificate, Income_in_Rs]);
         } catch (error) {
             console.error('Error creating: ', error.message);
         }
@@ -290,7 +323,7 @@ class DatabaseManager {
     async insertIntoSslcTable(SSLC_CBSE_ICSE_Reg_Number, Board_Type, Year_of_Passing, DOB) {
         try {
             await this.pool.query(queries.InsertIntoSslcTable,
-            [SSLC_CBSE_ICSE_Reg_Number, Board_Type, Year_of_Passing, DOB]);
+                [SSLC_CBSE_ICSE_Reg_Number, Board_Type, Year_of_Passing, DOB]);
         } catch (error) {
             console.error('Error creating: ', error.message);
         }
@@ -366,7 +399,7 @@ class DatabaseManager {
 
     async viewTrigger() {
         try {
-            const [rows]  = await this.pool.query(queries.ViewTigger);
+            const [rows] = await this.pool.query(queries.ViewTigger);
             return rows;
 
         } catch (error) {
@@ -375,37 +408,60 @@ class DatabaseManager {
         }
     }
 
-   
+    async updateDates(SchemeClosingDate, DefectiveAppVerificationDate, InstituteVerificationDate, DNO_SNO_MNO_VerificationDate,SchemeNumber ) {
+        try {
+            await this.pool.query(queries.UpdateDates, [SchemeClosingDate, DefectiveAppVerificationDate, InstituteVerificationDate, DNO_SNO_MNO_VerificationDate,SchemeNumber]);
+            console.log('Announcement updated successfully');
+            return true; // Return true or another value to indicate success
+        } catch (error) {
+            console.error('Error updating announcement:', error);
+            return false; // Return false or handle error in another way
+        }
+    }
+
+
+    async insertIntoAnnouncement(SchemeNumber, SchemeName, SchemeClosingDate, DefectiveAppVerificationDate, InstituteVerificationDate, DNO_SNO_MNO_VerificationDate) {
+        try {
+            await this.pool.query(queries.InsertIntoAnnouncement, [SchemeNumber, SchemeName, SchemeClosingDate, DefectiveAppVerificationDate, InstituteVerificationDate, DNO_SNO_MNO_VerificationDate]);
+
+
+        } catch (error) {
+            console.error('Error creating: ', error.message);
+            return [];
+        }
+    }
+
+
 
     async deleteRecordss(Student_ID) {
         try {
             // Check if the student exists before attempting deletion
-            
 
-                // Perform deletion of records
-                // You need to write appropriate SQL queries to delete records from all relevant tables
-                await this.pool.query(queries.AcademicDelete, [Student_ID]);
-                await this.pool.query(queries.AddressDelete, [Student_ID]);
-                await this.pool.query(queries.CasteIncomeDelete, [Student_ID]);
-                await this.pool.query(queries.SslcDelete, [Student_ID]);
-                // Add more deletion queries if needed
-            
+
+            // Perform deletion of records
+            // You need to write appropriate SQL queries to delete records from all relevant tables
+            await this.pool.query(queries.AcademicDelete, [Student_ID]);
+            await this.pool.query(queries.AddressDelete, [Student_ID]);
+            await this.pool.query(queries.CasteIncomeDelete, [Student_ID]);
+            await this.pool.query(queries.SslcDelete, [Student_ID]);
+            // Add more deletion queries if needed
+
         } catch (error) {
             console.error('Error deleting records:', error.message);
-             // Rethrow the error to handle it in the route handler
+            // Rethrow the error to handle it in the route handler
         }
     }
 
     async deleteRecordss1(Student_ID) {
-        try {      
-                await this.pool.query("DELETE FROM academic_details WHERE Student_ID = ?", [Student_ID]);
-                await this.pool.query("DELETE FROM address_details WHERE Student_ID = ?", [Student_ID]);
-                await this.pool.query("DELETE FROM caste_income_details WHERE Student_ID = ?", [Student_ID]);
-                await this.pool.query("DELETE FROM sslc_details WHERE SSLC_CBSE_ICSE_Reg_Number = (SELECT SSLC_CBSE_ICSE_Reg_Number FROM academic_details WHERE Student_ID = ?)", [Student_ID]);
-                
-                return true; 
-            } 
-            
+        try {
+            await this.pool.query("DELETE FROM academic_details WHERE Student_ID = ?", [Student_ID]);
+            await this.pool.query("DELETE FROM address_details WHERE Student_ID = ?", [Student_ID]);
+            await this.pool.query("DELETE FROM caste_income_details WHERE Student_ID = ?", [Student_ID]);
+            await this.pool.query("DELETE FROM sslc_details WHERE SSLC_CBSE_ICSE_Reg_Number = (SELECT SSLC_CBSE_ICSE_Reg_Number FROM academic_details WHERE Student_ID = ?)", [Student_ID]);
+
+            return true;
+        }
+
         catch (error) {
             console.error('Error deleting records:', error.message);
         }
@@ -418,24 +474,24 @@ class DatabaseManager {
             const [addressDetailsResult] = await this.pool.query("SELECT COUNT(*) AS count FROM address_details WHERE Student_ID = ?", [Student_ID]);
             const [casteIncomeDetailsResult] = await this.pool.query("SELECT COUNT(*) AS count FROM caste_income_details WHERE Student_ID = ?", [Student_ID]);
             const [sslcDetailsResult] = await this.pool.query("SELECT COUNT(*) AS count FROM sslc_details WHERE SSLC_CBSE_ICSE_Reg_Number = (SELECT SSLC_CBSE_ICSE_Reg_Number FROM academic_details WHERE Student_ID = ?)", [Student_ID]);
-    
+
             const academicDetailsCount = academicDetailsResult[0].count;
             const addressDetailsCount = addressDetailsResult[0].count;
             const casteIncomeDetailsCount = casteIncomeDetailsResult[0].count;
             const sslcDetailsCount = sslcDetailsResult[0].count;
-    
+
             if (academicDetailsCount > 0 && addressDetailsCount > 0 && casteIncomeDetailsCount > 0 && sslcDetailsCount > 0) {
                 // Perform deletion of records
                 // Use transactions for atomicity
                 await this.pool.beginTransaction();
-    
+
                 await this.pool.query("DELETE FROM academic_details WHERE Student_ID = ?", [Student_ID]);
                 await this.pool.query("DELETE FROM address_details WHERE Student_ID = ?", [Student_ID]);
                 await this.pool.query("DELETE FROM caste_income_details WHERE Student_ID = ?", [Student_ID]);
                 await this.pool.query("DELETE FROM sslc_details WHERE SSLC_CBSE_ICSE_Reg_Number = (SELECT SSLC_CBSE_ICSE_Reg_Number FROM academic_details WHERE Student_ID = ?)", [Student_ID]);
-    
+
                 await this.pool.commit();
-    
+
                 return true; // Deletion successful
             } else {
                 // If the student does not exist in any relevant table, return false
@@ -448,8 +504,8 @@ class DatabaseManager {
             throw error; // Rethrow the error to handle it in the route handler
         }
     }
-    
-    
+
+
 };
 
 

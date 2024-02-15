@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Announcement</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        form {
+            width: 100%;
+        }
+
+        label {
+            font-weight: bold;
+            color: #555;
+        }
+
+        input[type="number"],
+        input[type="text"],
+        input[type="date"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Update Announcement</h2>
+        <form action="/upannouncements" method="PUT">
+            <label for="SchemeNumber">Scheme Number:</label><br>
+            <input type="number" id="SchemeNumber" name="SchemeNumber" required><br>
+        
+            <label for="SchemeClosingDate">Scheme Closing Date:</label><br>
+            <input type="date" id="SchemeClosingDate" name="SchemeClosingDate" placeholder="yyyy-mm-dd" required><br>
+        
+            <label for="DefectiveAppVerificationDate">Defective App Verification Date:</label><br>
+            <input type="date" id="DefectiveAppVerificationDate" name="DefectiveAppVerificationDate" placeholder="yyyy-mm-dd" required><br>
+        
+            <label for="InstituteVerificationDate">Institute Verification Date:</label><br>
+            <input type="date" id="InstituteVerificationDate" name="InstituteVerificationDate" placeholder="yyyy-mm-dd" required><br>
+        
+            <label for="DNO_SNO_MNO_VerificationDate">DNO/SNO/MNO Verification Date:</label><br>
+            <input type="date" id="DNO_SNO_MNO_VerificationDate" name="DNO_SNO_MNO_VerificationDate" placeholder="yyyy-mm-dd" required><br>
+        
+            <br>
+            <input type="submit" value="Submit">
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('updateForm').addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            const form = event.target;
+            const formData = new FormData(form);
+
+            try {
+                const response = await fetch('/upannouncements', {
+                    method: 'PUT',
+                    body: formData
+                });
+
+                if (response.ok) {
+                    alert('Announcement updated successfully!');
+                } else {
+                    throw new Error('Failed to update announcement.');
+                }
+            } catch (error) {
+                console.error('Error updating announcement:', error.message);
+                alert('Failed to update announcement. Please try again.');
+            }
+        });
+    </script>
+</body>
+</html>

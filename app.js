@@ -118,6 +118,44 @@ app.get('/announcements', (req, res) => {
     res.sendFile(__dirname + '/frontend/Homepage/announcement.html');
 });
 
+app.get('/announce', (req, res) => {
+    res.sendFile(__dirname + '/backend/controllers/update.html');
+});
+
+app.get('/upannouncements', (req, res) => {
+    res.sendFile(__dirname + '/backend/controllers/up.html');
+});
+
+app.put('/upannouncements', async (req, res) => {
+    const formData = req.body;
+    // const SchemeNumber = parseInt(formData.SchemeNumber);
+    const success = await DBHandler.updateDates(formData.SchemeClosingDate, formData.DefectiveAppVerificationDate, formData.InstituteVerificationDate, formData.DNO_SNO_MNO_VerificationDate,formData.SchemeNumber );
+    
+    if (success) {
+        res.status(200).send("Announcement updated successfully. Notification sent to admin.");
+        // Send notification to admin (e.g., email, message)
+    } else {
+        res.status(500).send("Unable to update announcement. Please try again later.");
+        // Handle error or send notification to admin about the error
+    }
+});
+
+
+app.get('/addannouncements', (req, res) => {
+    res.sendFile(__dirname + '/backend/controllers/add.html');
+});
+
+app.post('/addannouncements', async (req, res) => {
+    const formData = req.body;
+    await DBHandler.insertIntoAnnouncement(formData.SchemeNumber, formData.SchemeName, formData.SchemeClosingDate, formData.DefectiveAppVerificationDate, formData.InstituteVerificationDate, formData.DNO_SNO_MNO_VerificationDate);
+    
+});
+
+
+// PUT endpoint to update announcement dates
+
+
+
 // this is for address details
 
 // Route to handle address details form submission
@@ -148,7 +186,6 @@ app.post('/Next4', async (req, res) => {
 
     res.sendFile(__dirname + '/frontend/views/acknowledge.html');
 });
-
 
 
 
