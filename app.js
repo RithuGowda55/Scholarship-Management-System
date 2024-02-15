@@ -3,9 +3,12 @@
 const express = require('express');
 const mysql = require('mysql2');
 const router = express.Router();
+const bodyParser = require('body-parser');
+const methodOverride = require('method-override');
+
 // const dbManager = new DatabaseManager();
 
-const path = require('path'); 
+const path = require('path');
 
 // Create an Express application
 const app = express();
@@ -16,6 +19,10 @@ const port = 5500;
 // Set the view engine to 'ejs'
 // app.set('view engine', 'html');
 app.set('views', path.join(__dirname, 'frontend/Homepage'));
+
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+app.use(methodOverride('_method'));
 
 // Database handler
 const DatabaseManager = require('./database');
@@ -121,7 +128,7 @@ app.get('/announcements', async (req, res) => {
         const announ = await DBHandler.displayAnnouncement();
 
         // Execute the query
-        if (announ){
+        if (announ) {
             // res.json(announ);
             // res.render('announcement', { announ });
             res.sendFile(path.join(__dirname, 'frontend/Homepage/announcement.html'));
@@ -130,7 +137,7 @@ app.get('/announcements', async (req, res) => {
             // res.render('announcement', { announcements });
 
             // Render HTML form with fetched data
-            
+
         }
     } catch (error) {
         console.error('Error fetching data from database: ', error);
@@ -138,7 +145,7 @@ app.get('/announcements', async (req, res) => {
     }
 });
 
-app.get('/api/announcements',async  (req, res) => {
+app.get('/api/announcements', async (req, res) => {
     const success = await DBHandler.displayAnnouncement();
     res.send(success)
 });
@@ -153,24 +160,29 @@ app.get('/upannouncements', (req, res) => {
 
 app.put('/upannouncements', async (req, res) => {
     const formData = req.body;
-    // const SchemeNumber = parseInt(formData.SchemeNumber);
-    const success = await DBHandler.updateDates(formData.SchemeClosingDate, formData.DefectiveAppVerificationDate, formData.InstituteVerificationDate, formData.DNO_SNO_MNO_VerificationDate,formData.SchemeNumber );
-    
-    if (success) {
-        sendNotificationToAdmin('Announcement updated successfully.', 'success');
-        res.status(200).send("Announcement updated successfully. Notification sent to admin.");
-        // Send notification to admin (e.g., email, message)
-    } else {
-        sendNotificationToAdmin('Unable to update announcement. Please try again later.', 'error');
-        res.status(500).send("Unable to update announcement. Please try again later.");
-        // Handle error or send notification to admin about the error
+    try {
+        const result = await DBHandler.updateDates(
+            formData.SchemeClosingDate,
+            formData.DefectiveAppVerificationDate,
+            formData.InstituteVerificationDate,
+            formData.DNO_SNO_MNO_VerificationDate,
+            formData.SchemeNumber
+        );
+
+        if (result) {
+            res.status(200).send("Announcement updated successfully."); // Send a success response
+        } else {
+            res.status(404).send("Failed to update announcement. Scheme number does not exist."); // Send an error response
+        }
+    } catch (error) {
+        console.error('Error updating announcement:', error);
+        res.status(500).send("Failed to update announcement. Please try again later."); // Send an error response
     }
 });
 
-function sendNotificationToAdmin(message) {
-    // Implement code to send a push notification to the admin with the provided message
-    console.log('Push notification sent to admin:', message);
-}
+
+
+
 
 
 app.get('/addannouncements', (req, res) => {
@@ -179,8 +191,25 @@ app.get('/addannouncements', (req, res) => {
 
 app.post('/addannouncements', async (req, res) => {
     const formData = req.body;
-    await DBHandler.insertIntoAnnouncement(formData.SchemeNumber, formData.SchemeName, formData.SchemeClosingDate, formData.DefectiveAppVerificationDate, formData.InstituteVerificationDate, formData.DNO_SNO_MNO_VerificationDate);
-    
+    try {
+        const result = await DBHandler.insertIntoAnnouncement(
+            formData.SchemeNumber,
+            formData.SchemeName,
+            formData.SchemeClosingDate,
+            formData.DefectiveAppVerificationDate,
+            formData.InstituteVerificationDate,
+            formData.DNO_SNO_MNO_VerificationDate
+        );
+
+        if (result) {
+            res.status(200).send("Announcement added successfully.");
+        } else {
+            res.status(404).send("Failed to add data to announcement table. Please check your input values and try again.");
+        }
+    } catch (error) {
+        console.error('Error adding announcement:', error);
+        res.status(500).send("Failed to add announcement. Please try again later.");
+    }
 });
 
 
@@ -466,10 +495,10 @@ app.get('/admin/:Student_ID', async (req, res) => {
         </table>
 
       `;
-      // Send the HTML table as the response
-      res.send(table);
+            // Send the HTML table as the response
+            res.send(table);
 
-            
+
         } else {
             // If student is not found, send a 404 response
             res.status(404).json({ error: 'Student not found' });
@@ -489,33 +518,19 @@ app.get('/admin/:Student_ID', async (req, res) => {
 
 
 app.get('/admindel/:Student_ID', async (req, res) => {
-    const studentId = req.params.Student_ID; // Extracting student ID from the route parameter
-    console.log(studentId);
+    const studentId = req.params.Student_ID;
 
     try {
-        // Perform deletion operation
         const result = await DBHandler.deleteRecordss(studentId);
-
-        // Log the result object to debug
-        console.log("Result:", result);
-
-        // Check if any rows were affected
-        if (!result || result.affectedRows === undefined || result.affectedRows === 0) {
-            // If no rows were affected, send an alert message
-            return res.send('<h1>Student ID not found</h1>');
-
-        }
-
-        // If deletion was successful, send a success message
-        console.log("Deleted successfully");
-        return res.send('<h1>Student records deleted successfully</h1>');
-
+        // If deletion is successful, send a success response
+        res.status(200).send(result);
     } catch (error) {
-        // If there's an error, send a 500 response
-        console.error('Error deleting student:', error.message);
-        res.status(500).json({ error: 'Internal Server Error' });
+        // If there's an error, send an error response
+        console.error('Error deleting student records:', error.message);
+        res.status(500).send(error.message);
     }
 });
+
 
 app.get('/api/audit_trail', async (req, res) => {
     // res.json(academicDetailsData);

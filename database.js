@@ -258,7 +258,18 @@ WHERE
         DefectiveAppVerificationDate, InstituteVerificationDate, 
         DNO_SNO_MNO_VerificationDate)
 VALUES (?, ?, ?, ?, ?, ?);
-`
+`,
+
+    CountOfId:
+    `SELECT COUNT(*) AS count 
+    FROM (
+        SELECT Student_ID FROM academic_details WHERE Student_ID = ?
+        UNION ALL
+        SELECT Student_ID FROM address_details WHERE Student_ID = ?
+        UNION ALL
+        SELECT Student_ID FROM caste_income_details WHERE Student_ID = ?
+    ) AS combined_tables;
+    `
 
 
 };
@@ -426,26 +437,44 @@ class DatabaseManager {
         }
     }
 
-    async updateDates(SchemeClosingDate, DefectiveAppVerificationDate, InstituteVerificationDate, DNO_SNO_MNO_VerificationDate,SchemeNumber ) {
+    async updateDates(SchemeClosingDate, DefectiveAppVerificationDate, InstituteVerificationDate, DNO_SNO_MNO_VerificationDate, SchemeNumber) {
         try {
-            await this.pool.query(queries.UpdateDates, [SchemeClosingDate, DefectiveAppVerificationDate, InstituteVerificationDate, DNO_SNO_MNO_VerificationDate,SchemeNumber]);
-            console.log('Announcement updated successfully');
-            return true; // Return true or another value to indicate success
+            SchemeNumber = parseInt(SchemeNumber);
+            const schemeExists = await this.pool.query('SELECT COUNT(*) AS count FROM announce WHERE SchemeNumber = ?', [SchemeNumber]);
+    
+            if (schemeExists[0][0].count === 0) {
+                console.log('Scheme number does not exist');
+                return false;
+            } else {
+                await this.pool.query(queries.UpdateDates, [SchemeClosingDate, DefectiveAppVerificationDate, InstituteVerificationDate, DNO_SNO_MNO_VerificationDate, SchemeNumber]);
+                console.log('Announcement updated successfully');
+                return true;
+            }
         } catch (error) {
             console.error('Error updating announcement:', error);
-            return false; // Return false or handle error in another way
+            return false;
         }
     }
+    
 
 
     async insertIntoAnnouncement(SchemeNumber, SchemeName, SchemeClosingDate, DefectiveAppVerificationDate, InstituteVerificationDate, DNO_SNO_MNO_VerificationDate) {
         try {
             await this.pool.query(queries.InsertIntoAnnouncement, [SchemeNumber, SchemeName, SchemeClosingDate, DefectiveAppVerificationDate, InstituteVerificationDate, DNO_SNO_MNO_VerificationDate]);
-
-
+            return true; // Return true if the insertion is successful
         } catch (error) {
             console.error('Error creating: ', error.message);
-            return [];
+            return false; // Return false if there's an error
+        }
+    }
+
+    async countOfId(Student_ID) {
+        try {
+            const [[row]] = await this.pool.query(CountOfId, [Student_ID, Student_ID, Student_ID]);
+            return row.count; // Return the count value
+        } catch (error) {
+            console.error('Error counting IDs: ', error.message);
+            return false; // Return false if there's an error
         }
     }
 
@@ -456,74 +485,86 @@ class DatabaseManager {
     async deleteRecordss(Student_ID) {
         try {
             // Check if the student exists before attempting deletion
+            const studentExists = await this.pool.query(queries.CountOfId, [Student_ID, Student_ID, Student_ID]);
+            // const studentExists = await this.countOfId(Student_ID);
 
-
+            // console.log("Count of student:", studentExists[0].count); // For debugging
+            if (studentExists[0].count === 0) {
+                // If the student does not exist, throw an error
+                throw new Error('Student does not exist');
+            }
+            
             // Perform deletion of records
-            // You need to write appropriate SQL queries to delete records from all relevant tables
+            await this.pool.query(queries.SslcDelete, [Student_ID]);
             await this.pool.query(queries.AcademicDelete, [Student_ID]);
             await this.pool.query(queries.AddressDelete, [Student_ID]);
             await this.pool.query(queries.CasteIncomeDelete, [Student_ID]);
-            await this.pool.query(queries.SslcDelete, [Student_ID]);
-            // Add more deletion queries if needed
-
+            
+    
+            // If deletion is successful, return success message
+            return "check the database";
         } catch (error) {
             console.error('Error deleting records:', error.message);
-            // Rethrow the error to handle it in the route handler
+            // If there's an error, return an error message
+            return { success: false, message: error.message };
         }
     }
+    
+    
+    
 
-    async deleteRecordss1(Student_ID) {
-        try {
-            await this.pool.query("DELETE FROM academic_details WHERE Student_ID = ?", [Student_ID]);
-            await this.pool.query("DELETE FROM address_details WHERE Student_ID = ?", [Student_ID]);
-            await this.pool.query("DELETE FROM caste_income_details WHERE Student_ID = ?", [Student_ID]);
-            await this.pool.query("DELETE FROM sslc_details WHERE SSLC_CBSE_ICSE_Reg_Number = (SELECT SSLC_CBSE_ICSE_Reg_Number FROM academic_details WHERE Student_ID = ?)", [Student_ID]);
+    // async deleteRecordss1(Student_ID) {
+    //     try {
+    //         await this.pool.query("DELETE FROM academic_details WHERE Student_ID = ?", [Student_ID]);
+    //         await this.pool.query("DELETE FROM address_details WHERE Student_ID = ?", [Student_ID]);
+    //         await this.pool.query("DELETE FROM caste_income_details WHERE Student_ID = ?", [Student_ID]);
+    //         await this.pool.query("DELETE FROM sslc_details WHERE SSLC_CBSE_ICSE_Reg_Number = (SELECT SSLC_CBSE_ICSE_Reg_Number FROM academic_details WHERE Student_ID = ?)", [Student_ID]);
 
-            return true;
-        }
+    //         return true;
+    //     }
 
-        catch (error) {
-            console.error('Error deleting records:', error.message);
-        }
-    }
+    //     catch (error) {
+    //         console.error('Error deleting records:', error.message);
+    //     }
+    // }
 
-    async deleteRecordss1(Student_ID) {
-        try {
-            // Check if the student exists before attempting deletion
-            const [academicDetailsResult] = await this.pool.query("SELECT COUNT(*) AS count FROM academic_details WHERE Student_ID = ?", [Student_ID]);
-            const [addressDetailsResult] = await this.pool.query("SELECT COUNT(*) AS count FROM address_details WHERE Student_ID = ?", [Student_ID]);
-            const [casteIncomeDetailsResult] = await this.pool.query("SELECT COUNT(*) AS count FROM caste_income_details WHERE Student_ID = ?", [Student_ID]);
-            const [sslcDetailsResult] = await this.pool.query("SELECT COUNT(*) AS count FROM sslc_details WHERE SSLC_CBSE_ICSE_Reg_Number = (SELECT SSLC_CBSE_ICSE_Reg_Number FROM academic_details WHERE Student_ID = ?)", [Student_ID]);
+//     async deleteRecordss1(Student_ID) {
+//         try {
+//             // Check if the student exists before attempting deletion
+//             const [academicDetailsResult] = await this.pool.query("SELECT COUNT(*) AS count FROM academic_details WHERE Student_ID = ?", [Student_ID]);
+//             const [addressDetailsResult] = await this.pool.query("SELECT COUNT(*) AS count FROM address_details WHERE Student_ID = ?", [Student_ID]);
+//             const [casteIncomeDetailsResult] = await this.pool.query("SELECT COUNT(*) AS count FROM caste_income_details WHERE Student_ID = ?", [Student_ID]);
+//             const [sslcDetailsResult] = await this.pool.query("SELECT COUNT(*) AS count FROM sslc_details WHERE SSLC_CBSE_ICSE_Reg_Number = (SELECT SSLC_CBSE_ICSE_Reg_Number FROM academic_details WHERE Student_ID = ?)", [Student_ID]);
 
-            const academicDetailsCount = academicDetailsResult[0].count;
-            const addressDetailsCount = addressDetailsResult[0].count;
-            const casteIncomeDetailsCount = casteIncomeDetailsResult[0].count;
-            const sslcDetailsCount = sslcDetailsResult[0].count;
+//             const academicDetailsCount = academicDetailsResult[0].count;
+//             const addressDetailsCount = addressDetailsResult[0].count;
+//             const casteIncomeDetailsCount = casteIncomeDetailsResult[0].count;
+//             const sslcDetailsCount = sslcDetailsResult[0].count;
 
-            if (academicDetailsCount > 0 && addressDetailsCount > 0 && casteIncomeDetailsCount > 0 && sslcDetailsCount > 0) {
-                // Perform deletion of records
-                // Use transactions for atomicity
-                await this.pool.beginTransaction();
+//             if (academicDetailsCount > 0 && addressDetailsCount > 0 && casteIncomeDetailsCount > 0 && sslcDetailsCount > 0) {
+//                 // Perform deletion of records
+//                 // Use transactions for atomicity
+//                 await this.pool.beginTransaction();
 
-                await this.pool.query("DELETE FROM academic_details WHERE Student_ID = ?", [Student_ID]);
-                await this.pool.query("DELETE FROM address_details WHERE Student_ID = ?", [Student_ID]);
-                await this.pool.query("DELETE FROM caste_income_details WHERE Student_ID = ?", [Student_ID]);
-                await this.pool.query("DELETE FROM sslc_details WHERE SSLC_CBSE_ICSE_Reg_Number = (SELECT SSLC_CBSE_ICSE_Reg_Number FROM academic_details WHERE Student_ID = ?)", [Student_ID]);
+//                 await this.pool.query("DELETE FROM academic_details WHERE Student_ID = ?", [Student_ID]);
+//                 await this.pool.query("DELETE FROM address_details WHERE Student_ID = ?", [Student_ID]);
+//                 await this.pool.query("DELETE FROM caste_income_details WHERE Student_ID = ?", [Student_ID]);
+//                 await this.pool.query("DELETE FROM sslc_details WHERE SSLC_CBSE_ICSE_Reg_Number = (SELECT SSLC_CBSE_ICSE_Reg_Number FROM academic_details WHERE Student_ID = ?)", [Student_ID]);
 
-                await this.pool.commit();
+//                 await this.pool.commit();
 
-                return true; // Deletion successful
-            } else {
-                // If the student does not exist in any relevant table, return false
-                return false;
-            }
-        } catch (error) {
-            console.error('Error deleting records:', error.message);
-            // Rollback the transaction in case of an error
-            await this.pool.rollback();
-            throw error; // Rethrow the error to handle it in the route handler
-        }
-    }
+//                 return true; // Deletion successful
+//             } else {
+//                 // If the student does not exist in any relevant table, return false
+//                 return false;
+//             }
+//         } catch (error) {
+//             console.error('Error deleting records:', error.message);
+//             // Rollback the transaction in case of an error
+//             await this.pool.rollback();
+//             throw error; // Rethrow the error to handle it in the route handler
+//         }
+//     }
 
 
 };

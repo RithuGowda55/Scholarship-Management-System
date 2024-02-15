@@ -36,8 +36,7 @@
             color: #555;
         }
 
-        input[type="number"],
-        input[type="text"],
+        input[type="int"],
         input[type="date"] {
             width: 100%;
             padding: 10px;
@@ -65,9 +64,8 @@
 <body>
     <div class="container">
         <h2>Update Announcement</h2>
-        <form action="/upannouncements" method="PUT">
-            <label for="SchemeNumber">Scheme Number:</label><br>
-            <input type="number" id="SchemeNumber" name="SchemeNumber" required><br>
+        <form id="updateForm">
+            
         
             <label for="SchemeClosingDate">Scheme Closing Date:</label><br>
             <input type="date" id="SchemeClosingDate" name="SchemeClosingDate" placeholder="yyyy-mm-dd" required><br>
@@ -80,6 +78,9 @@
         
             <label for="DNO_SNO_MNO_VerificationDate">DNO/SNO/MNO Verification Date:</label><br>
             <input type="date" id="DNO_SNO_MNO_VerificationDate" name="DNO_SNO_MNO_VerificationDate" placeholder="yyyy-mm-dd" required><br>
+
+            <label for="SchemeNumber">Scheme Number:</label><br>
+            <input type="int" id="SchemeNumber" name="SchemeNumber" required><br>
         
             <br>
             <input type="submit" value="Submit">
@@ -90,13 +91,15 @@
         document.getElementById('updateForm').addEventListener('submit', async (event) => {
             event.preventDefault();
 
-            const form = event.target;
-            const formData = new FormData(form);
+            const formData = new FormData(event.target);
 
             try {
                 const response = await fetch('/upannouncements', {
                     method: 'PUT',
-                    body: formData
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(Object.fromEntries(formData))
                 });
 
                 if (response.ok) {
@@ -110,5 +113,4 @@
             }
         });
     </script>
-</body>
-</html>
+</body></html>

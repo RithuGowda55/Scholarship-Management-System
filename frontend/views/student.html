@@ -230,7 +230,9 @@ State_Scholarship_Portal
 
         <form id="Form2" action="/Next2" method="post">
             <h3>Academic Details</h3>
-            <input type="hidden" id="studentId2" name="Student_ID" value="">
+            <!-- <input type="int" id="studentId2" name="Student_ID" value=""> -->
+            <input type="text" name="Student_ID" placeholder="Student ID" required>
+
             <input type="text" name="SSLC_CBSE_ICSE_Reg_Number" placeholder="SSLC/CBSE/ICSE Reg Number" required>
             <input type="text" name="Student_Name_as_in_SSLC_CBSE_ICSE" placeholder="Student Name as in SSLC/CBSE/ICSE"
                 required>
@@ -270,8 +272,8 @@ Income_in_Rs
 
         <form id="Form3" action="/Next3" method="post">
             <h3>Caste and Income Certificate Details</h3>
-            <!-- <input type="text" name="Student_ID" placeholder="Student ID" required> -->
-            <input type="hidden" id="studentId3" name="Student_ID" value="">
+            <input type="text" name="Student_ID" placeholder="Student ID" required>
+            <!-- <input type="hidden" id="studentId3" name="Student_ID" value=""> -->
             <input type="text" name="Religion" placeholder="Religion" required>
             <input type="text" name="Category" placeholder="Category" required>
             <input type="text" name="Caste_Certificate_Number" placeholder="Caste Certificate Number" required>
@@ -302,8 +304,8 @@ DOB
 
         <form id="Form4" action="/Next4" method="post">
             <h3>SSLC Details</h3>
-            <!-- <input type="text" name="SSLC_CBSE_ICSE_Reg_Number" placeholder="SSLC/CBSE/ICSE Reg Number" required> -->
-            <input type="hidden" id="sslcRegNumber" name="SSLC_CBSE_ICSE_Reg_Number" value="">
+            <input type="text" name="SSLC_CBSE_ICSE_Reg_Number" placeholder="SSLC/CBSE/ICSE Reg Number" required>
+            <!-- <input type="hidden" id="sslcRegNumber" name="SSLC_CBSE_ICSE_Reg_Number" value=""> -->
             <input type="text" name="Board_Type" placeholder="Board Type" required>
             <input type="number" name="Year_of_Passing" placeholder="Year of Passing" required>
             <input type="date" name="DOB" placeholder="Date of Birth" required>
@@ -349,6 +351,16 @@ DOB
     </div>
 
     <script>
+
+        function setStudentId(studentId) {
+            document.querySelector('#studentId2').value = studentId;
+            document.querySelector('#studentId3').value = studentId;
+        }
+
+        // Function to set the SSLC_CBSE_ICSE_Reg_Number value for Form 4
+        function setSSLCRegNumber(regNumber) {
+            document.querySelector('#sslcRegNumber').value = regNumber;
+        }
         var Form1 = document.getElementById("Form1");
         var Form2 = document.getElementById("Form2");
         var Form3 = document.getElementById("Form3");
@@ -366,17 +378,43 @@ DOB
         var progress = document.getElementById("progress");
 
 
-        Next1.onclick = function () {
-            // if (!isFormValid(Form1)) {
-            //     alert("Please fill in all required fields before proceeding.");
-            //     return false; // Prevent default behavior if form is not valid
-            // }
+        Next1.onclick = async function () {
+            if (!isFormValid(Form1)) {
+                alert("Please fill in all required fields before proceeding.");
+                return false; // Prevent default behavior if form is not valid
+            }
+
+            // Submit the form data
+            // const formData = new FormData(Form1);
+            // const response = await submitFormData(formData, "/Next1"); // Assuming "/Next1" is the endpoint to handle form submission
+
+            // if (response && response.success) {
             Form1.style.left = "-450px";
             Form2.style.left = "40px";
             progress.style.width = "160px";
+            // } else {
+            // alert("Error submitting form data. Please try again.");
+            // }
         }
+        // async function submitFormData(formData, url) {
+        //     try {
+        //         const response = await fetch(url, {
+        //             method: 'POST',
+        //             body: formData
+        //         });
 
-        
+        //         if (!response.ok) {
+        //             throw new Error('Network response was not ok');
+        //         }
+
+        //         return response.json();
+        //     } catch (error) {
+        //         console.error('There was a problem with your fetch operation:', error);
+        //         return null;
+        //     }
+        // }
+
+
 
         Back1.onclick = function () {
             Form1.style.left = "40px";
@@ -386,10 +424,10 @@ DOB
         }
 
         Next2.onclick = function () {
-            // if (!isFormValid(Form2)) {
-            //     alert("Please fill in all required fields before proceeding.");
-            //     return false; // Prevent default behavior if form is not valid
-            // }
+            if (!isFormValid(Form2)) {
+                alert("Please fill in all required fields before proceeding.");
+                return false; // Prevent default behavior if form is not valid
+            }
             Form2.style.left = "-450px";
             Form3.style.left = "40px";
             progress.style.width = "240px";
@@ -403,10 +441,10 @@ DOB
         }
 
         Next3.onclick = function () {
-            // if (!isFormValid(Form3)) {
-            //     alert("Please fill in all required fields before proceeding.");
-            //     return false; // Prevent default behavior if form is not valid
-            // }
+            if (!isFormValid(Form3)) {
+                alert("Please fill in all required fields before proceeding.");
+                return false; // Prevent default behavior if form is not valid
+            }
             Form3.style.left = "-450px";
             Form4.style.left = "40px";
             progress.style.width = "340px";
@@ -470,15 +508,15 @@ DOB
         document.querySelector('#sslcRegNumber').value = sslcRegNumber;
 
 
-        // function isFormValid(form) {
-        //     var requiredFields = form.querySelectorAll("input[required]");
-        //     for (var i = 0; i < requiredFields.length; i++) {
-        //         if (requiredFields[i].value.trim() === "") {
-        //             return false; // Return false if any required field is empty
-        //         }
-        //     }
-        //     return true; // Return true if all required fields are filled
-        // }
+        function isFormValid(form) {
+            var requiredFields = form.querySelectorAll("input[required]");
+            for (var i = 0; i < requiredFields.length; i++) {
+                if (requiredFields[i].value.trim() === "") {
+                    return false; // Return false if any required field is empty
+                }
+            }
+            return true; // Return true if all required fields are filled
+        }
 
 
 

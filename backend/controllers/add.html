@@ -98,5 +98,31 @@ input[type="submit"]:hover {
     </form>
 
     </div>
+
+    <script>
+        document.getElementById('addForm').addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            const form = event.target;
+            const formData = new FormData(form);
+
+            try {
+                const response = await fetch('/addannouncements', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (response.ok) {
+                    alert('Announcement added successfully!');
+                } else {
+                    const errorMessage = await response.text();
+                    alert(errorMessage);
+                }
+            } catch (error) {
+                console.error('Error adding announcement:', error.message);
+                alert('Failed to add announcement. Please try again.');
+            }
+        });
+    </script>
     </body>
 </html>
