@@ -1,6 +1,28 @@
 const mysql = require("mysql2");
 
 const queries = {
+    //Authentication
+
+    CreatePassawordTable:
+
+    `CREATE TABLE IF NOT EXISTS users (
+        username VARCHAR(255) PRIMARY KEY,
+        password VARCHAR(255) NOT NULL
+    );
+    `,
+
+    InsertIntoPassword:
+    `
+    INSERT INTO users (username, password) VALUES (?,?);
+
+    `,
+    FetchPassword:
+    `
+    SELECT username, password FROM users WHERE username = ? and password = ?;
+
+    `,
+
+
     // ACADEMIC DETAILS QUERIES
 
     CreateAcademicTable:
@@ -297,6 +319,8 @@ class DatabaseManager {
             await this.pool.query(queries.CreateStudentView);
             await this.pool.query(queries.CreateAdminView);
             await this.pool.query(queries.AnnouncementDates);
+            await this.pool.query(queries.CreatePassawordTable);
+
 
 
         } catch (error) {
@@ -308,6 +332,26 @@ class DatabaseManager {
         try {
             await this.pool.query(queries.InsertIntoAddressTable,
                 [Student_ID, Name, Gender, Email, Home_District, Home_Taluk, Assembly_Constituency, Pin_Code, Permanent_Address, Domicile_of_Karnataka]);
+        } catch (error) {
+            console.error('Error creating: ', error.message);
+        }
+    }
+
+    async insertIntoPassword(username, password) {
+        try {
+            await this.pool.query(queries.InsertIntoPassword,
+                [username, password]);
+        } catch (error) {
+            console.error('Error creating: ', error.message);
+        }
+    }
+
+    async fetchPassword(username, password) {
+        try {
+            const [[row]] = await this.pool.query(queries.FetchPassword,
+                [username, password]);
+
+            return row;
         } catch (error) {
             console.error('Error creating: ', error.message);
         }

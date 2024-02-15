@@ -212,8 +212,14 @@ app.post('/addannouncements', async (req, res) => {
     }
 });
 
+app.post('/authentication1', async (req, res) => {
+    const formData = req.body;
 
-// PUT endpoint to update announcement dates
+    await DBHandler.insertIntoPassword(formData.username,formData.password);
+});
+
+
+
 
 
 
