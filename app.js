@@ -5,10 +5,14 @@ const mysql = require('mysql2');
 const router = express.Router();
 const bodyParser = require('body-parser');
 const methodOverride = require('method-override');
+// const html = require('html');
+
 
 // const dbManager = new DatabaseManager();
 
 const path = require('path');
+// app.set('view engine', 'html');
+
 
 // Create an Express application
 const app = express();
@@ -52,13 +56,122 @@ app.use(express.static(__dirname + '/frontend/public'));
 // app.get('/', (req, res) => {
 //     res.sendFile(__dirname + '/frontend/views/authentication.html');
 // });
+// app.post("/register", async (req, res) => {
+//     const email = req.body["username"];
+//     const password = req.body["password"];
+  
+//     try {
+//       const [checkResult] = await DBHandler.query("SELECT * FROM users WHERE email = ?", [email]);
+//       if (checkResult.length > 0) {
+//         res.send("Email already exists, Try logging in");
+//       } else {
+//         const result = await pool.query("INSERT INTO users (email, password) VALUES (?, ?)", [email, password]);
+//         console.log(result);
+//         res.render("secrets.ejs");
+//       }
+//     } catch (error) {
+//       console.error(error);
+//       res.status(500).send("Internal Server Error");
+//     }
+//   });
+
+
+app.post("/register", async (req, res) => {
+    const formData = req.body;
+  
+    try {
+        const [checkResult] = await db.query("SELECT * FROM users WHERE username = ?", [formData.username]);
+        if (checkResult.length > 0) {
+            res.send("Email already exists, Try logging in");
+        } else {
+            const result = await db.query("INSERT INTO users (username, password) VALUES (?, ?)", [formData.username, formData.password]);
+            console.log(result);
+            res.sendFile(__dirname + "/frontend/views/admin_dashboard.html");
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Internal Server Error");
+    }
+});
+
+
+app.post("/login", async (req, res) => {
+    const email = req.body["username"];
+    const password = req.body["password"];
+    try {
+        const [[user]] = await db.query("SELECT * FROM users WHERE username = ?", [email]);
+        if (user) {
+            const storedPassword = user.password;
+            if (password === storedPassword) {
+                res.sendFile(__dirname + "/frontend/views/admin_dashboard.html"); 
+            } 
+                else {
+                res.send("Incorrect Password");
+            }
+        } else {
+            res.send("User not found");
+        }
+    } catch (err) {
+        console.log(err);
+        res.status(500).send("Internal Server Error");
+    }
+});
+
+app.post("/register1", async (req, res) => {
+    const formData = req.body;
+  
+    try {
+        const [checkResult] = await db.query("SELECT * FROM admin WHERE username = ?", [formData.username]);
+        if (checkResult.length > 0) {
+            res.send("Email already exists, Try logging in");
+        } else {
+            const result = await db.query("INSERT INTO admin (username, password) VALUES (?, ?)", [formData.username, formData.password]);
+            console.log(result);
+            res.sendFile(__dirname + "/frontend/views/studentopt.html");
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Internal Server Error");
+    }
+});
+
+
+app.post("/login1", async (req, res) => {
+    const email = req.body["username"];
+    const password = req.body["password"];
+    try {
+        const [[user]] = await db.query("SELECT * FROM admin WHERE username = ?", [email]);
+        if (user) {
+            const storedPassword = user.password;
+            if (password === storedPassword) {
+                res.sendFile(__dirname + "/frontend/views/studentopt.html"); 
+            } 
+                else {
+                res.send("Incorrect Password");
+            }
+        } else {
+            res.send("User not found");
+        }
+    } catch (err) {
+        console.log(err);
+        res.status(500).send("Internal Server Error");
+    }
+});
+
+
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/frontend/views/index.html');
 });
 
+// app.get('/authentication1.html', (req, res) => {
+//     res.sendFile(__dirname + '/frontend/views/authentication1.html');
+// });
+
 app.get('/authentication1.html', (req, res) => {
-    res.sendFile(__dirname + '/frontend/views/authentication1.html');
+    res.render(__dirname + '/frontend/views/home1.ejs');
 });
+
+
 app.get('/student.html', (req, res) => {
     res.sendFile(__dirname + '/frontend/views/student.html');
 });
@@ -70,13 +183,34 @@ app.get('/acknowledge.html', (req, res) => {
     res.sendFile(__dirname + '/frontend/views/acknowledge.html');
 });
 
+// app.get('/authentication2.html', (req, res) => {
+//     res.sendFile(__dirname + '/frontend/views/authentication2.html');
+// });
+
 app.get('/authentication2.html', (req, res) => {
-    res.sendFile(__dirname + '/frontend/views/authentication2.html');
+    res.render(__dirname + '/frontend/views/home.ejs');
+});
+
+app.get('/login', (req, res) => {
+    res.render(__dirname + '/frontend/views/login.ejs');
+});
+
+app.get('/login1', (req, res) => {
+    res.render(__dirname + '/frontend/views/login1.ejs');
 });
 
 app.get('/admin_dashboard.html', (req, res) => {
     res.sendFile(__dirname + '/frontend/views/admin_dashboard.html');
 });
+
+app.get('/register', (req, res) => {
+    res.render(__dirname + '/frontend/views/register.ejs');
+});
+
+app.get('/register1', (req, res) => {
+    res.render(__dirname + '/frontend/views/register1.ejs');
+});
+
 
 app.get('/index', (req, res) => {
     res.sendFile(__dirname + '/frontend/views/index.html');
@@ -215,7 +349,22 @@ app.post('/addannouncements', async (req, res) => {
 app.post('/authentication1', async (req, res) => {
     const formData = req.body;
 
-    await DBHandler.insertIntoPassword(formData.username,formData.password);
+    try {
+        // Perform authentication logic here, for example:
+        const about = await DBHandler.insertIntoPassword(formData.username, formData.password);
+        res.sendFile(__dirname + '/frontend/views/admin_dashboard.html');
+
+
+        if (about) {
+            res.status(200).send("Authentication successful");
+        } else {
+            res.status(401).send("Authentication failed");
+        }
+    } catch (error) {
+        console.error('Error during authentication:', error);
+        res.status(500).send("Internal Server Error");
+    }
+
 });
 
 

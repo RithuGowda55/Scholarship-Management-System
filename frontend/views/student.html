@@ -242,8 +242,7 @@ State_Scholarship_Portal
             <input type="text" name="College_Name" placeholder="College Name*" required>
             <input type="text" name="Course_and_Course_Year" placeholder="Course and Course Year*" required>
             <input type="text" name="Course_Discipline_or_Branch" placeholder="Course Discipline or Branch*" required>
-            <input type="text" name="University_Registration_or_SATS_Number*"
-                placeholder="University Registration or SATS Number" required>
+            <input type="text" name="University_Registration_or_SATS_Number" placeholder="University Registration or SATS Number*" required>
             <input type="text" name="Course_Duration" placeholder="Course Duration*" required>
             <input type="text" name="Counselling_Details" placeholder="Counselling Details*" required>
             <input type="text" name="Counselling_Seat_Type" placeholder="Counselling Seat Type*" required>
@@ -379,10 +378,10 @@ DOB
 
 
         Next1.onclick = async function () {
-            if (!isFormValid(Form1)) {
-                alert("Please fill in all required fields before proceeding.");
-                return false; // Prevent default behavior if form is not valid
-            }
+        //     if (!isFormValid(Form1)) {
+        //         alert("Please fill in all required fields before proceeding.");
+        //         return false; // Prevent default behavior if form is not valid
+        //     }
 
             // Submit the form data
             // const formData = new FormData(Form1);
@@ -424,10 +423,10 @@ DOB
         }
 
         Next2.onclick = function () {
-            if (!isFormValid(Form2)) {
-                alert("Please fill in all required fields before proceeding.");
-                return false; // Prevent default behavior if form is not valid
-            }
+            // if (!isFormValid(Form2)) {
+            //     alert("Please fill in all required fields before proceeding.");
+            //     return false; // Prevent default behavior if form is not valid
+            // }
             Form2.style.left = "-450px";
             Form3.style.left = "40px";
             progress.style.width = "240px";
@@ -441,10 +440,10 @@ DOB
         }
 
         Next3.onclick = function () {
-            if (!isFormValid(Form3)) {
-                alert("Please fill in all required fields before proceeding.");
-                return false; // Prevent default behavior if form is not valid
-            }
+            // if (!isFormValid(Form3)) {
+            //     alert("Please fill in all required fields before proceeding.");
+            //     return false; // Prevent default behavior if form is not valid
+            // }
             Form3.style.left = "-450px";
             Form4.style.left = "40px";
             progress.style.width = "340px";
