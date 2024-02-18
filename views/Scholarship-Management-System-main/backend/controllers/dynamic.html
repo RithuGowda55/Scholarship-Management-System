@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delete Student Information</title>
+    <!-- <link rel="stylesheet" href="/frontend/public/style1.css"> -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        .con {
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        label {
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        input[type="int"] {
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            margin-top: 10px;
+            background-color: #dc3545;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        .button:hover {
+            background-color: #c82333;
+        }
+
+        #student_info {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        #student_info p {
+            margin: 5px;
+        }
+
+        #student_info p:nth-child(odd) {
+            background-color: #f9f9f9;
+        }
+    </style>
+    
+    
+</head>
+<body>
+    <div class="con">
+        <h1>Delete Student Information</h1>
+        <label for="student_id">Enter Student ID:</label>
+        <input type="int" id="student_id" name="Student_ID" onchange="updateLink()" > <!-- Corrected ID attribute -->
+        <a href="#"  class="button" id="fetch_link"> Delete </a>
+    </div>
+
+    
+    </div>
+
+    <script>
+
+        function updateLink() {
+            const studentId = document.getElementById('student_id').value;
+            const link = document.getElementById('fetch_link');
+            link.href = `/admindel/${studentId}`;
+        }
+
+        async function fetchStudent() {
+            const studentId = document.getElementById('student_id').value;
+            try {
+                const response = await fetch(`http://localhost:3000/admin/${studentId}`);
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const data = await response.json();
+                displayStudentInfo(data);
+            } catch (error) {
+                console.error('Error fetching student:', error);
+                displayStudentInfo(null); // Display an error message
+            }
+        }
+    
+            
+
+    </script>
+    
+</body>
+</html>
